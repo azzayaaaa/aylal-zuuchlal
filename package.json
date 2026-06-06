@@ -1,0 +1,49 @@
+{
+  "name": "travel-agency",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "dev:services": "node services/dev.js",
+    "services:gateway": "node services/api-gateway/index.js",
+    "services:auth": "node services/auth-service/index.js",
+    "services:user": "node services/user-service/index.js",
+    "services:tour": "node services/tour-service/index.js",
+    "services:booking": "node services/booking-service/index.js",
+    "services:payment": "node services/payment-service/index.js",
+    "services:notification": "node services/notification-service/index.js",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev --name init",
+    "db:studio": "prisma studio"
+  },
+  "dependencies": {
+    "@ai-sdk/groq": "^3.0.39",
+    "@ai-sdk/react": "^3.0.199",
+    "@prisma/client": "^6.19.3",
+    "ai": "^6.0.197",
+    "bcryptjs": "^3.0.3",
+    "gsap": "^3.15.0",
+    "lenis": "^1.3.23",
+    "lucide-react": "^1.17.0",
+    "next": "16.2.7",
+    "nodemailer": "^8.0.10",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/nodemailer": "^8.0.0",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.7",
+    "ffmpeg-static": "^5.3.0",
+    "prisma": "^6.19.3",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}

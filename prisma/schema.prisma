@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Inquiry {
+  id            Int      @id @default(autoincrement())
+  name          String
+  phone         String
+  email         String?
+  destination   String
+  travelers     Int      @default(1)
+  adults        Int      @default(1)
+  children      Int      @default(0)
+  preferredDate DateTime?
+  paymentMethod  String   @default("bank")
+  paymentStatus  String   @default("pending")
+  visaStatus      String?
+  passportStatus  String?
+  budget         String?
+  bookingCode    String?
+  reminderSentAt DateTime?
+  message       String?  @db.Text
+  status        String   @default("new")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("inquiries")
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  identifier   String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("users")
+}

@@ -1,0 +1,502 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: "Geist", "Geist Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", "Geist Mono Fallback", ui-monospace, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+::selection {
+  background: #f4c76b;
+  color: #1b160f;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 720ms ease,
+    transform 720ms ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.intro-reveal {
+  animation: intro-reveal 820ms ease 180ms forwards;
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+@keyframes intro-reveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.brand-logo-shadow {
+  filter: drop-shadow(0 8px 16px rgb(0 0 0 / 0.18));
+}
+
+.film-bg {
+  filter: saturate(1.08) contrast(1.02) brightness(1.08);
+}
+
+.film-scene {
+  isolation: isolate;
+}
+
+.lantern-glow {
+  animation: lantern-pulse 3.6s ease-in-out infinite;
+}
+
+.river-shimmer {
+  mix-blend-mode: screen;
+}
+
+.city-streak {
+  box-shadow: 0 0 28px currentColor;
+}
+
+.journey-progress-dot[data-active] {
+  box-shadow: 0 0 0 5px rgb(176 24 76 / 0.12);
+}
+
+.map-cloud {
+  position: absolute;
+  z-index: 1;
+  width: clamp(160px, 20vw, 300px);
+  height: clamp(56px, 7vw, 96px);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 24% 58%, rgb(255 255 255 / 0.82) 0 32%, transparent 34%),
+    radial-gradient(circle at 48% 38%, rgb(255 255 255 / 0.78) 0 38%, transparent 40%),
+    radial-gradient(circle at 72% 58%, rgb(255 255 255 / 0.76) 0 31%, transparent 33%);
+  filter: blur(1px);
+  opacity: 0.65;
+  pointer-events: none;
+}
+
+.map-cloud-a {
+  right: 11%;
+  top: 12%;
+}
+
+.map-cloud-b {
+  left: 45%;
+  top: 32%;
+  opacity: 0.42;
+}
+
+.map-cloud-c {
+  right: 4%;
+  bottom: 15%;
+  opacity: 0.5;
+}
+
+.route-image {
+  filter: saturate(1.06) contrast(1.02) brightness(1.08);
+  object-fit: cover;
+  object-position: center;
+  transform-origin: center;
+}
+
+.route-stop {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    opacity 240ms ease,
+    transform 240ms ease;
+}
+
+.route-stop:not([data-passed]) {
+  opacity: 0.46;
+}
+
+.route-stop[data-active] {
+  opacity: 1;
+  transform: scale(1.35);
+}
+
+.route-stop[data-active] .route-stop-pulse {
+  animation: route-stop-pulse 1.5s ease-out infinite;
+  opacity: 0.8;
+}
+
+.route-stop-label {
+  transition:
+    color 220ms ease,
+    transform 220ms ease,
+    opacity 220ms ease;
+  opacity: 0.58;
+}
+
+.route-stop-label[data-passed] {
+  color: rgb(255 255 255 / 0.78);
+  opacity: 1;
+}
+
+.route-stop-label[data-active] {
+  color: #e8c77a;
+  transform: translateX(4px);
+}
+
+.route-stop-label[data-active] span:first-child,
+.route-stop-label[data-passed] span:first-child {
+  background: #e8c77a;
+}
+
+.cinematic-journey-pin {
+  isolation: isolate;
+}
+
+.cinematic-scene-image {
+  width: 100vw;
+  height: 100vh;
+  filter: saturate(1.06) contrast(1.04) brightness(0.96);
+  object-fit: cover;
+  transform-origin: center;
+}
+
+.cinematic-grain {
+  background-image:
+    radial-gradient(circle at 15% 20%, rgb(255 255 255 / 0.04), transparent 1px),
+    radial-gradient(circle at 75% 55%, rgb(255 255 255 / 0.035), transparent 1px),
+    radial-gradient(circle at 35% 80%, rgb(0 0 0 / 0.08), transparent 1px);
+  background-size: 17px 17px, 23px 23px, 19px 19px;
+  mix-blend-mode: soft-light;
+  opacity: 0.42;
+}
+
+.journey-warm-wipe {
+  background:
+    linear-gradient(90deg, transparent, rgb(232 199 122 / 0.18), rgb(255 248 231 / 0.34), transparent),
+    radial-gradient(circle at 50% 48%, rgb(244 183 201 / 0.18), transparent 46%);
+  filter: blur(10px);
+  mix-blend-mode: screen;
+  transform: skewX(-10deg);
+  will-change: transform, opacity;
+}
+
+.journey-cloud-veil {
+  background:
+    radial-gradient(ellipse at 18% 42%, rgb(255 255 255 / 0.72), transparent 34%),
+    radial-gradient(ellipse at 44% 56%, rgb(255 248 231 / 0.62), transparent 36%),
+    radial-gradient(ellipse at 75% 38%, rgb(255 255 255 / 0.5), transparent 32%),
+    linear-gradient(90deg, transparent, rgb(255 255 255 / 0.34), transparent);
+  filter: blur(18px);
+  mix-blend-mode: screen;
+  transform: translateX(34%);
+  will-change: transform, opacity;
+}
+
+.journey-bokeh {
+  background:
+    radial-gradient(circle at 62% 32%, rgb(232 199 122 / 0.52), transparent 10%),
+    radial-gradient(circle at 74% 44%, rgb(255 248 231 / 0.34), transparent 8%),
+    radial-gradient(circle at 52% 54%, rgb(244 183 201 / 0.3), transparent 9%),
+    radial-gradient(circle at 82% 68%, rgb(232 185 94 / 0.28), transparent 11%);
+  filter: blur(9px);
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+}
+
+.journey-mist {
+  background:
+    radial-gradient(ellipse at 20% 70%, rgb(255 248 231 / 0.22), transparent 34%),
+    radial-gradient(ellipse at 72% 76%, rgb(244 183 201 / 0.16), transparent 30%),
+    linear-gradient(0deg, rgb(255 255 255 / 0.16), transparent);
+  filter: blur(12px);
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+}
+
+.journey-neon-sheen {
+  background:
+    linear-gradient(115deg, transparent 28%, rgb(244 183 201 / 0.18), transparent 54%),
+    radial-gradient(circle at 72% 36%, rgb(232 199 122 / 0.2), transparent 24%),
+    radial-gradient(circle at 45% 62%, rgb(244 183 201 / 0.16), transparent 26%);
+  filter: blur(4px);
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+}
+
+.journey-light-rays {
+  background:
+    radial-gradient(circle at 78% 30%, rgb(232 199 122 / 0.28), transparent 22%),
+    linear-gradient(112deg, transparent 24%, rgb(255 248 231 / 0.12), transparent 46%),
+    linear-gradient(68deg, transparent 42%, rgb(244 183 201 / 0.14), transparent 64%);
+  filter: blur(3px);
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+}
+
+.journey-story-cue {
+  text-shadow: 0 0 22px rgb(232 199 122 / 0.24);
+  will-change: transform, opacity, filter;
+}
+
+.tour-package-section {
+  background:
+    radial-gradient(circle at 18% 24%, rgb(232 199 122 / 0.12), transparent 32%),
+    radial-gradient(circle at 82% 18%, rgb(244 183 201 / 0.08), transparent 30%),
+    #10201d;
+}
+
+.tour-package-section .parallax-bg {
+  filter: saturate(1.08) contrast(1.04) brightness(0.72);
+}
+
+.editorial-tour-card {
+  transform-style: preserve-3d;
+}
+
+.booking-step {
+  will-change: transform, opacity;
+}
+
+.review-card,
+.faq-item,
+.footer-reveal {
+  will-change: transform, opacity;
+}
+
+.footer-social:hover {
+  transform: translateX(3px);
+}
+.hero-petal {
+  box-shadow: 0 8px 18px rgb(244 183 201 / 0.14);
+  will-change: transform, opacity;
+}
+
+.fuji-depth-layer {
+  will-change: transform;
+}
+
+.shibuya-reflection {
+  background:
+    linear-gradient(180deg, transparent, rgb(255 255 255 / 0.07)),
+    repeating-linear-gradient(100deg, rgb(244 183 201 / 0.0) 0 18px, rgb(244 183 201 / 0.08) 19px 20px, rgb(232 199 122 / 0.08) 34px 35px);
+  filter: blur(8px);
+  mix-blend-mode: screen;
+  transform: skewY(-4deg);
+  animation: shibuya-reflection 5.6s ease-in-out infinite;
+}
+
+.firework-particle {
+  will-change: transform, opacity;
+}
+
+.boarding-pass {
+  background:
+    radial-gradient(circle at 78% 22%, rgb(232 199 122 / 0.18), transparent 24%),
+    linear-gradient(135deg, #fffaf0, #f5ead3);
+}
+
+@keyframes shibuya-reflection {
+  0%,
+  100% {
+    transform: translateX(-2%) skewY(-4deg);
+    opacity: 0.48;
+  }
+
+  50% {
+    transform: translateX(2%) skewY(-4deg);
+    opacity: 0.76;
+  }
+}
+
+.cinematic-route-overlay {
+  transform: translateZ(0);
+}
+
+.cinematic-route-path {
+  will-change: stroke-dashoffset;
+}
+
+.cinematic-route-plane {
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+.cinematic-route-stop {
+  opacity: 0.45;
+  transition:
+    opacity 260ms ease,
+    filter 260ms ease;
+}
+
+.cinematic-route-stop[data-complete],
+.cinematic-route-stop[data-active] {
+  opacity: 1;
+}
+
+.cinematic-route-stop[data-active] {
+  filter: drop-shadow(0 0 12px rgb(232 199 122 / 0.62));
+}
+
+.cinematic-route-stop[data-active] .cinematic-route-stop-glow {
+  animation: route-stop-pulse 1.45s ease-out infinite;
+  opacity: 0.55;
+}
+
+.cinematic-route-label-item {
+  transition:
+    color 220ms ease,
+    opacity 220ms ease,
+    transform 220ms ease;
+}
+
+.cinematic-route-label-item[data-complete] {
+  color: rgb(255 248 231 / 0.82);
+  opacity: 0.9;
+}
+
+.cinematic-route-label-item[data-active] {
+  color: #e8c77a;
+  opacity: 1;
+  transform: translateX(2px);
+}
+
+@keyframes route-stop-pulse {
+  0% {
+    opacity: 0.9;
+    transform: scale(0.75);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.75);
+  }
+}
+
+@keyframes lantern-pulse {
+  0%,
+  100% {
+    opacity: 0.52;
+    transform: scale(0.92);
+  }
+
+  50% {
+    opacity: 0.95;
+    transform: scale(1.1);
+  }
+}
+
+.booking-bg-reveal,
+.booking-image-reveal {
+  animation: booking-image-reveal 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.booking-title-reveal {
+  animation: booking-title-reveal 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.booking-thumb-row {
+  scrollbar-width: none;
+}
+
+.booking-thumb-row::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes booking-image-reveal {
+  0% {
+    opacity: 0;
+    filter: blur(14px);
+    transform: scale(1.08) translateX(18px);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1) translateX(0);
+  }
+}
+
+@keyframes booking-title-reveal {
+  0% {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateY(18px);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 767px) {
+  .journey-section {
+    min-height: 100svh;
+  }
+
+  .cinematic-route-overlay {
+    bottom: 1rem;
+    opacity: 0.92;
+  }
+
+  .cinematic-route-label-item {
+    font-size: 8px;
+  }
+
+  .fuji-depth-section,
+  .shibuya-neon-section,
+  .disney-finale {
+    min-height: 86svh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .intro-reveal {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .film-scene,
+  .film-bg,
+  .scene-copy,
+  .masked-photo,
+  .phone-frame,
+  .final-journey-cta {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+}

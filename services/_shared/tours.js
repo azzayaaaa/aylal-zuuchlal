@@ -1,0 +1,48 @@
+const tours = [
+  {
+    id: "tokyo-fuji-sakura",
+    badge: "Hot",
+    category: "Tokyo",
+    title: "Tokyo & Fuji Sakura Tour",
+    duration: "7 days / 6 nights",
+    route: "UB -> Tokyo -> Fuji -> Disneyland",
+    seatsLeft: 8,
+    priceFrom: "3,990,000 MNT",
+    includes: ["Hotel", "Guide", "Transport", "Itinerary"],
+  },
+  {
+    id: "osaka-kyoto-culture",
+    badge: "New",
+    category: "Kyoto",
+    title: "Osaka & Kyoto Culture Tour",
+    duration: "7 days / 6 nights",
+    route: "UB -> Osaka -> Kyoto -> Nara",
+    seatsLeft: 11,
+    priceFrom: "4,290,000 MNT",
+    includes: ["Hotel", "Guide", "Train support", "Itinerary"],
+  },
+  {
+    id: "tokyo-disney-family",
+    badge: "Family",
+    category: "Disneyland",
+    title: "Tokyo Disneyland Family Tour",
+    duration: "5 days / 4 nights",
+    route: "UB -> Tokyo -> Disneyland -> DisneySea",
+    seatsLeft: 5,
+    priceFrom: "4,590,000 MNT",
+    includes: ["Hotel", "Guide", "Park tickets", "Park planning"],
+  },
+  {
+    id: "tokyo-shopping-premium",
+    badge: "Featured",
+    category: "Tokyo",
+    title: "Tokyo Premium Shopping Tour",
+    duration: "4 days / 3 nights",
+    route: "UB -> Tokyo -> Ginza -> Shibuya -> Outlet",
+    seatsLeft: 6,
+    priceFrom: "3,290,000 MNT",
+    includes: ["Hotel", "Guide", "Transport", "Concierge"],
+  },
+];
+
+module.exports = { tours };
