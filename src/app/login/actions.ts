@@ -55,7 +55,7 @@ export async function loginUser(
         });
       }
     } catch (error) {
-      console.error("User login database fallback", error);
+      console.warn("User login database fallback", error);
     }
   }
 
