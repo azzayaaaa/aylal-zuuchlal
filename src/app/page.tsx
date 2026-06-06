@@ -413,6 +413,20 @@ const packageOptions = [
   },
 ];
 
+const trustSignals = [
+  ["Бодит workflow", "AI зөвлөгөө → booking wizard → email confirmation → admin pipeline нэг урсгалд ажиллана."],
+  ["Operations dashboard", "Админ захиалга, төлбөр, status, хэрэглэгчийн хүсэлтийг нэг самбараас хянадаг."],
+  ["Mobile-first UX", "Захиалга, login, cinematic route, destination gallery бүгд утсан дээр уншигдах байдлаар зассан."],
+  ["Production deploy", "Next.js, Prisma, Vercel, email notification, microservice gateway fallback-той production demo."],
+];
+
+const portfolioHighlights = [
+  "AI itinerary assistant: Монгол хэлээр budget, хоног, сонирхлоор маршрут санал болгоно.",
+  "Smart booking wizard: бүлэг, хүний тоо, огноо, сонирхол, payment preference-г нэгтгэнэ.",
+  "Admin operations: booking filter, revenue estimate, status/payment update, detail view.",
+  "Marketing UX: cinematic ScrollTrigger journey, responsive nav, trust/FAQ/review section.",
+];
+
 export default function Home() {
   const mainTour = destinations[0];
 
@@ -591,6 +605,52 @@ export default function Home() {
                   </div>
                 </Link>
               ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="relative isolate overflow-hidden bg-[#10201d] py-18 text-white sm:py-24">
+        <Image src={japanImages.akihabaraNeon} alt="Sakura Travel product workflow" fill sizes="100vw" className="pointer-events-none -z-30 object-cover object-center opacity-18" />
+        <div className="absolute inset-0 -z-20 bg-[linear-gradient(105deg,rgba(16,32,29,0.95),rgba(16,32,29,0.8)_52%,rgba(39,100,87,0.62))]" />
+        <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-5 lg:grid-cols-[0.86fr_1.14fr] lg:px-8">
+          <div>
+            <p className="blur-reveal text-sm font-semibold uppercase tracking-[0.22em] text-[#e8b95e]">Portfolio product</p>
+            <h2 className="blur-reveal mt-4 text-4xl font-semibold leading-tight text-[#fff8e7] sm:text-5xl">
+              Зүгээр landing биш, захиалга удирддаг travel platform.
+            </h2>
+            <p className="blur-reveal mt-5 max-w-xl text-lg leading-8 text-white/72">
+              Sakura Travel нь Япон аяллын санал, AI itinerary зөвлөгөө, booking wizard, email confirmation, admin operations dashboard-г нэг production demo болгож харуулна.
+            </p>
+            <div className="blur-reveal mt-7 flex flex-col gap-3 sm:flex-row">
+              <Link href="/case-study" className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#e8b95e] px-6 font-semibold text-[#17211d] transition hover:bg-[#f6cf7a]">
+                Case study харах
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link href="/admin" className="inline-flex h-12 items-center justify-center rounded-full border border-white/24 px-6 font-semibold text-white transition hover:bg-white/10">
+                Admin demo
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            {trustSignals.map(([title, text]) => (
+              <div key={title} className="blur-reveal rounded-[8px] border border-white/12 bg-white/8 p-5 shadow-2xl shadow-black/10 backdrop-blur">
+                <ShieldCheck className="h-5 w-5 text-[#e8b95e]" />
+                <h3 className="mt-4 font-semibold text-[#fff8e7]">{title}</h3>
+                <p className="mt-2 text-sm leading-6 text-white/68">{text}</p>
+              </div>
+            ))}
+            <div className="blur-reveal rounded-[8px] border border-[#e8b95e]/24 bg-[#fff8e7] p-5 text-[#17211d] md:col-span-2">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#b0184c]">Ажилд үзүүлэх онцлох зүйлс</p>
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                {portfolioHighlights.map((item) => (
+                  <p key={item} className="flex gap-2 text-sm leading-6 text-[#43504a]">
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#276457]" />
+                    {item}
+                  </p>
+                ))}
+              </div>
             </div>
           </div>
         </div>

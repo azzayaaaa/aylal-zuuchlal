@@ -2,7 +2,7 @@
 
 import { FormEvent, useMemo, useState } from "react";
 import type { LucideIcon } from "lucide-react";
-import { CalendarDays, Check, CreditCard, Hotel, MapPin, Minus, Plane, Plus, Ticket, Users } from "lucide-react";
+import { CalendarDays, Check, CreditCard, Hotel, MapPin, Minus, Plane, Plus, Sparkles, Ticket, Users } from "lucide-react";
 import { destinations } from "@/lib/travel-data";
 
 const steps = [
@@ -13,6 +13,19 @@ const steps = [
 ];
 
 const CHILD_PRICE_RATE = 0.8;
+
+const groupTypes = ["Гэр бүл", "Хос", "Найзууд", "Ажил/баг"];
+
+const interestOptions = ["Fuji зураг", "Disney", "Shopping", "Anime", "Сүм хийд", "Food tour"];
+
+const planByInterest: Record<string, string> = {
+  "Fuji зураг": "Fuji, Kawaguchiko, Oshino Hakkai дээр өглөөний зураг авалттай өдөр нэмж төлөвлөнө.",
+  Disney: "Disneyland эсвэл DisneySea өдрийг queue, ticket, хүүхэдтэй амралтын хэмнэлтэй тааруулна.",
+  Shopping: "Shibuya, Ginza, Gotemba outlet-ийг budget болон brand сонирхолд тааруулна.",
+  Anime: "Akihabara, character store, game center, Harajuku street culture-ийг багтаана.",
+  "Сүм хийд": "Asakusa Senso-ji, Meiji Shrine, хуучин Tokyo алхалтын хэсгийг тайван хуваарьт оруулна.",
+  "Food tour": "Ramen, sushi, street snack, cafe stop-уудыг өдрийн маршрутад шигтгэнэ.",
+};
 
 function formatMoney(value: number) {
   return `${new Intl.NumberFormat("mn-MN").format(value)}₮`;
@@ -41,6 +54,8 @@ export function BookingForm({
   const [preferredDate, setPreferredDate] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("deposit");
   const [budget, setBudget] = useState("");
+  const [groupType, setGroupType] = useState(groupTypes[0]);
+  const [interests, setInterests] = useState<string[]>(["Fuji зураг"]);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState(initialPhone);
   const [email, setEmail] = useState(initialEmail);
@@ -58,10 +73,26 @@ export function BookingForm({
   const childTotal = children * childUnitPrice;
   const grandTotal = adultTotal + childTotal;
   const canContinue = step === 1 || (step === 2 && adults >= 1 && preferredDate) || (step === 3 && name.trim() && phone.trim());
+  const generatedPlan = useMemo(() => {
+    const selectedInterests = interests.length ? interests : ["Fuji зураг"];
+    return [
+      `${groupType} аялалд ${selected.duration} хугацаатай ${selected.shortTitle} багц хамгийн тохиромжтой.`,
+      ...selectedInterests.slice(0, 4).map((interest) => planByInterest[interest]),
+      `Урьдчилсан нийт дүн: ${formatMoney(grandTotal)}. Эцсийн үнэ нислэг, буудал, нэмэлт үзвэрээс хамаарна.`,
+    ].filter(Boolean);
+  }, [grandTotal, groupType, interests, selected.duration, selected.shortTitle]);
 
   function chooseTour(slug: string) {
     setInternalSelectedSlug(slug);
     onTourSelect?.(slug);
+  }
+
+  function toggleInterest(interest: string) {
+    setInterests((current) =>
+      current.includes(interest)
+        ? current.filter((item) => item !== interest)
+        : [...current, interest],
+    );
   }
 
   async function submitBooking(event: FormEvent<HTMLFormElement>) {
@@ -89,7 +120,14 @@ export function BookingForm({
         preferredDate,
         paymentMethod,
         budget,
-        message,
+        message: [
+          message.trim(),
+          "",
+          "Smart trip profile:",
+          `Group: ${groupType}`,
+          `Interests: ${interests.join(", ") || "Not selected"}`,
+          ...generatedPlan,
+        ].filter(Boolean).join("\n"),
       }),
     });
 
@@ -204,6 +242,62 @@ export function BookingForm({
               <span className="flex items-center gap-2"><Hotel className="h-4 w-4 text-[#276457]" />{selected.duration}</span>
               <span className="flex items-center gap-2"><Users className="h-4 w-4 text-[#276457]" />{adults + children} аялагч</span>
               <span className="flex items-center gap-2"><MapPin className="h-4 w-4 text-[#276457]" />{selected.groupSize}</span>
+            </div>
+            <div className="mt-5 rounded-[8px] border border-[#ead9c4] bg-white p-4 shadow-sm">
+              <div className="flex items-center gap-2 text-[#276457]">
+                <Sparkles className="h-4 w-4" />
+                <p className="font-semibold">Smart itinerary builder</p>
+              </div>
+              <div className="mt-4 grid gap-4 lg:grid-cols-[0.82fr_1.18fr]">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#9a8361]">Аяллын төрөл</p>
+                  <div className="mt-2 grid grid-cols-2 gap-2">
+                    {groupTypes.map((type) => (
+                      <button
+                        key={type}
+                        type="button"
+                        onClick={() => setGroupType(type)}
+                        className={`h-10 rounded-[8px] border px-3 text-sm font-semibold transition ${
+                          groupType === type ? "border-[#276457] bg-[#276457] text-white" : "border-[#d8cebd] bg-[#fffaf0] text-[#43504a] hover:border-[#d7a34f]"
+                        }`}
+                      >
+                        {type}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#9a8361]">Сонирхол</p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {interestOptions.map((interest) => {
+                      const active = interests.includes(interest);
+                      return (
+                        <button
+                          key={interest}
+                          type="button"
+                          onClick={() => toggleInterest(interest)}
+                          className={`rounded-full border px-3 py-2 text-xs font-semibold transition ${
+                            active ? "border-[#b0184c] bg-[#ffe5f1] text-[#b0184c]" : "border-[#d8cebd] bg-[#fffaf0] text-[#43504a] hover:border-[#d7a34f]"
+                          }`}
+                        >
+                          {interest}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 rounded-[8px] bg-[#10201d] p-4 text-white">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#e8b95e]">AI itinerary preview</p>
+                <div className="mt-3 space-y-2">
+                  {generatedPlan.map((line) => (
+                    <p key={line} className="flex gap-2 text-sm leading-6 text-white/78">
+                      <Check className="mt-1 h-4 w-4 shrink-0 text-[#e8b95e]" />
+                      {line}
+                    </p>
+                  ))}
+                </div>
+              </div>
             </div>
             <PriceSummary adults={adults} childCount={children} adultUnitPrice={adultUnitPrice} childUnitPrice={childUnitPrice} adultTotal={adultTotal} childTotal={childTotal} grandTotal={grandTotal} />
           </div>

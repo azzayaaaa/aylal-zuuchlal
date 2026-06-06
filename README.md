@@ -1,35 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sakura Travel
 
-## Getting Started
+Full-stack travel booking platform for Mongolian customers planning Japan trips.
 
-First, run the development server:
+Live demo: https://sakura-travel.vercel.app
+
+## What This Project Shows
+
+Sakura Travel is built as a portfolio-ready product demo, not just a landing page. It combines a cinematic marketing site with a working booking workflow, AI itinerary assistant, transactional email flow, and an admin operations dashboard.
+
+Core user flow:
+
+1. Customer understands the Tokyo-Fuji / Disney / Shopping travel packages.
+2. Customer asks the AI assistant for itinerary advice in Mongolian.
+3. Customer completes the smart booking wizard.
+4. Booking is saved to the database and prepared for email confirmation.
+5. Admin reviews, filters, and updates booking/payment status.
+
+## Key Features
+
+- AI itinerary assistant for budget, days, traveler type, Fuji, Disney, shopping, and anime interests.
+- Smart booking wizard with traveler count, date, group type, interests, payment preference, and generated trip profile.
+- Gmail/Nodemailer-ready booking confirmation email workflow.
+- Auth-protected admin dashboard with search, filters, metrics, revenue estimate, detail views, and status/payment updates.
+- Cinematic GSAP ScrollTrigger route experience.
+- Mobile-first responsive layout for homepage, login, booking, and gallery sections.
+- Prisma + MySQL database with indexes for booking lookup and reminders.
+- Vercel production deployment.
+
+## Tech Stack
+
+- Next.js App Router
+- React
+- TypeScript
+- Tailwind CSS
+- Prisma
+- MySQL
+- Vercel
+- GSAP ScrollTrigger
+- Vercel AI SDK + Groq
+- Nodemailer
+
+## Local Development
 
 ```bash
+npm install
+npm run db:generate
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Required environment variables are stored locally in `.env` and configured on Vercel for production.
 
-## Microservices
+## Microservice Mode
 
-This project also has a lightweight microservice mode. Start the services in
-one terminal:
+The project also includes lightweight service files for a gateway-style architecture.
 
 ```bash
 npm run dev:services
-```
-
-Then start the Next.js frontend in another terminal:
-
-```bash
 npm run dev
 ```
 
@@ -37,32 +65,29 @@ Service map:
 
 | Service | Port | Responsibility |
 | --- | ---: | --- |
-| API Gateway | 5000 | routes all requests |
-| Auth Service | 5001 | login/register/JWT |
-| User Service | 5002 | profile |
-| Tour Service | 5003 | tour packages |
-| Booking Service | 5004 | bookings |
-| Payment Service | 5005 | payment/status |
-| Notification Service | 5007 | email/sms |
+| API Gateway | 5000 | Routes booking requests |
+| Auth Service | 5001 | Login/register/JWT |
+| User Service | 5002 | Profile |
+| Tour Service | 5003 | Tour packages |
+| Booking Service | 5004 | Bookings |
+| Payment Service | 5005 | Payment/status |
+| Notification Service | 5007 | Email/SMS |
 
-The frontend booking form calls `/api/gateway/bookings`; that route forwards to
-`API_GATEWAY_URL` (`http://localhost:5000` by default). If the services are not
-running during local design work, it falls back to the existing Next.js booking
-handler so the UI still works.
+The frontend calls `/api/gateway/bookings`. If local services are not running, the route falls back to the Next.js booking handler so the UI remains testable.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Interview Talking Points
 
-## Learn More
+- I designed the user journey from travel discovery to admin follow-up.
+- I optimized the AI assistant with local fast replies before calling the LLM, improving perceived speed and Mongolian response quality.
+- I built the booking flow so user interests become structured context for the manager.
+- I added admin tooling that reflects real operational needs: filtering, status updates, payment state, and revenue estimates.
+- I shipped the app to Vercel and verified build, lint, mobile overflow, and production readiness.
 
-To learn more about Next.js, take a look at the following resources:
+## Useful Routes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `/` - marketing site and cinematic journey
+- `/booking` - smart booking wizard
+- `/login` - customer login
+- `/my-bookings` - customer bookings
+- `/admin` - admin operations dashboard
+- `/case-study` - engineering case study
