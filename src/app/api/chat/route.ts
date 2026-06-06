@@ -69,6 +69,59 @@ function matchedPackage(prompt: string) {
   );
 }
 
+function extractNumberBefore(prompt: string, words: string[]) {
+  const escapedWords = words.map((word) => word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|");
+  const match = prompt.match(new RegExp(`(\\d+)\\s*(?:${escapedWords})`, "iu"));
+  return match ? Number(match[1]) : null;
+}
+
+function itineraryAnswer(prompt: string) {
+  const normalizedPrompt = normalize(prompt);
+  const asksForPlan = ["төсөв", "tosov", "хоног", "honog", "маршрут", "itinerary", "аялал"].some(
+    (word) => normalizedPrompt.includes(normalize(word)),
+  );
+
+  if (!asksForPlan) return null;
+
+  const days = extractNumberBefore(prompt, ["хоног", "өдөр", "хон", "honog", "udur", "udur"]) ?? undefined;
+  const people = extractNumberBefore(prompt, ["хүн", "hun", "том хүн"]) ?? undefined;
+  const budgetMillion = extractNumberBefore(prompt, ["сая", "say"]) ?? undefined;
+  const likesDisney = ["disney", "disneyland", "дисней", "гэр бүл", "хүүхэд"].some((word) =>
+    normalizedPrompt.includes(normalize(word)),
+  );
+  const likesAnimeShopping = ["anime", "аниме", "shopping", "шоппинг", "akihabara", "harajuku"].some((word) =>
+    normalizedPrompt.includes(normalize(word)),
+  );
+  const likesFuji = ["fuji", "фүжи", "сакура", "зураг"].some((word) =>
+    normalizedPrompt.includes(normalize(word)),
+  );
+
+  const recommended = likesDisney
+    ? packageKnowledge[1]
+    : likesAnimeShopping || (days && days <= 5)
+      ? packageKnowledge[2]
+      : likesFuji || (days && days >= 7)
+        ? packageKnowledge[0]
+        : packageKnowledge[1];
+
+  const travelerText = people ? `${people} хүнд` : "танай багт";
+  const dayText = days ? `${days} хоногт` : "сонгосон хоногт";
+  const budgetText = budgetMillion
+    ? ` ${budgetMillion} сая төгрөгийн төсөв ${people && people > 1 ? "нийт төсөв үү, нэг хүний төсөв үү гэдгээс эцсийн сонголт хамаарна." : "бол нэг хүний төсөв гэж үзвэл илүү бодитой төлөвлөх боломжтой."}`
+    : " Төсвөө хэлбэл буудал, тээвэр, нэмэлт үзвэрийг илүү нарийвчилж өгнө.";
+
+  return `${travelerText} ${dayText} ${recommended.name} хамгийн тохиромжтой санагдаж байна. ${budgetText}
+
+Санал болгох маршрут:
+1. Улаанбаатараас Токио руу нисэж, буудалдаа байрлана.
+2. Токиогийн хотын аялал: Asakusa, Skytree, Shibuya.
+3. ${recommended.highlights}.
+4. Сонирхлоосоо хамаараад ${likesAnimeShopping ? "Akihabara, Harajuku, Ginza shopping" : likesDisney ? "Disneyland эсвэл DisneySea" : "Gotemba outlet эсвэл Oishi Park"} нэмнэ.
+5. Сүүлийн өдөр чөлөөт shopping хийгээд буцах нислэгтээ бэлдэнэ.
+
+Урьдчилсан үнэ: ${recommended.price}. Эцсийн үнэ хүний тоо, өдөр, буудал, тээвэр, нэмэлт үйлчилгээний сонголтоос хамаарна.`;
+}
+
 function instantAnswer(prompt: string) {
   const normalizedPrompt = normalize(prompt);
   const quick = quickReplies.find((item) =>
@@ -76,6 +129,9 @@ function instantAnswer(prompt: string) {
   );
 
   if (quick) return quick.answer;
+
+  const itinerary = itineraryAnswer(prompt);
+  if (itinerary) return itinerary;
 
   const pack = matchedPackage(prompt);
   if (!pack) return null;
