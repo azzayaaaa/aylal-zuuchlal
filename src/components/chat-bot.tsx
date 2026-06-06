@@ -15,7 +15,7 @@ export function ChatBot() {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       role: "assistant",
-      text: "Сайн байна уу? Төсөв, хоног, гэр бүл/хос/найзууд, Fuji, Disneyland, shopping, anime сонирхлоор Tokyo-Fuji itinerary санал болгоё.",
+      text: "Сайн байна уу? Төсөв, хоног, гэр бүл/хос/найзууд эсэх, Fuji, Disneyland, shopping, anime сонирхлоо хэлбэл Tokyo-Fuji itinerary санал болгоё.",
     },
   ]);
 
@@ -28,11 +28,15 @@ export function ChatBot() {
     setLoading(true);
     setMessages((current) => [...current, { role: "user", text: question }]);
 
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), 10000);
+
     try {
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: question }),
+        signal: controller.signal,
       });
       const data = (await response.json()) as { answer?: string };
       setMessages((current) => [
@@ -42,9 +46,10 @@ export function ChatBot() {
     } catch {
       setMessages((current) => [
         ...current,
-        { role: "assistant", text: "Чатботтой холбогдож чадсангүй. Дахин оролдоно уу." },
+        { role: "assistant", text: "Чатбот түр удааширлаа. Дахин оролдоно уу." },
       ]);
     } finally {
+      window.clearTimeout(timeoutId);
       setLoading(false);
     }
   }
