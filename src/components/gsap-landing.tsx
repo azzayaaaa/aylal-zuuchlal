@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Lenis from "lenis";
 
 const cinematicScenes = [
   {
@@ -121,15 +120,6 @@ export function GsapLanding() {
 
     gsap.ticker.lagSmoothing(0);
     const wheelCleanups: Array<() => void> = [];
-    const lenis = new Lenis({
-      duration: 1.05,
-      smoothWheel: true,
-      wheelMultiplier: 0.82,
-    });
-    const raf = (time: number) => lenis.raf(time * 1000);
-    gsap.ticker.add(raf);
-    lenis.on("scroll", ScrollTrigger.update);
-
     const context = gsap.context(() => {
       gsap.fromTo(".gsap-hero-bg", { scale: 1 }, {
         scale: 1.12,
@@ -502,7 +492,6 @@ export function GsapLanding() {
           const routePoint = getRoutePoint(clampedIndex);
 
           isAnimating = true;
-          lenis.stop();
           sceneTimeline?.kill();
           const isFujiMood = clampedIndex === 5 || clampedIndex === 6;
           const isNightMood = clampedIndex === 1 || clampedIndex === 4 || clampedIndex === 9;
@@ -511,11 +500,9 @@ export function GsapLanding() {
           sceneTimeline = gsap.timeline({
             defaults: { ease: "power3.inOut" },
             onComplete: () => {
-              window.scrollTo({ top: routeTrigger.start + window.innerHeight * clampedIndex, left: 0, behavior: "auto" });
               gsap.set(cinematicOverlays, { autoAlpha: 0 });
               if (storyCue) gsap.set(storyCue, { autoAlpha: 0 });
               isAnimating = false;
-              lenis.start();
             },
           });
 
@@ -645,7 +632,7 @@ export function GsapLanding() {
         setScene(0);
         const routeHydrationTimer = window.setTimeout(() => setScene(currentSceneIndex), 300);
 
-        const routeTrigger = ScrollTrigger.create({
+        ScrollTrigger.create({
           trigger: journey,
           start: "top top",
           end: () => `+=${window.innerHeight * sceneCount}`,
@@ -655,31 +642,21 @@ export function GsapLanding() {
           snap: false as unknown as undefined,
           onEnter: () => setScene(0),
           onEnterBack: () => setScene(sceneCount - 1),
+          onUpdate: (self) => {
+            if (isAnimating) return;
+            const progressIndex = Math.round(self.progress * (sceneCount - 1));
+            goToScene(progressIndex);
+          },
         });
-
-        const onWheel = (event: WheelEvent) => {
-          const scrollY = window.scrollY;
-          if (Math.abs(event.deltaY) < 8 || scrollY < routeTrigger.start - 4 || scrollY > routeTrigger.end + 4) return;
-
-          const direction = event.deltaY > 0 ? 1 : -1;
-          if ((currentSceneIndex === 0 && direction < 0) || (currentSceneIndex === sceneCount - 1 && direction > 0)) return;
-
-          event.preventDefault();
-          if (isAnimating) return;
-          goToScene(currentSceneIndex + direction);
-        };
 
         const onResize = () => setPlaneAtStop(currentSceneIndex);
 
-        window.addEventListener("wheel", onWheel, { passive: false });
         window.addEventListener("resize", onResize);
       wheelCleanups.push(() => {
         window.removeEventListener("pointerdown", playHeroVideo);
         window.removeEventListener("scroll", playHeroVideo);
         window.clearTimeout(routeHydrationTimer);
         sceneTimeline?.kill();
-          lenis.start();
-          window.removeEventListener("wheel", onWheel);
           window.removeEventListener("resize", onResize);
         });
       }
@@ -734,8 +711,6 @@ export function GsapLanding() {
       heroVideo?.removeEventListener("loadedmetadata", onHeroVideoMetadata);
       heroVideo?.removeEventListener("ended", onHeroVideoEnded);
       wheelCleanups.forEach((cleanup) => cleanup());
-      gsap.ticker.remove(raf);
-      lenis.destroy();
       context.revert();
     };
   }, []);

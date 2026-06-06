@@ -418,11 +418,11 @@ export default function Home() {
           <div className="journey-light-rays pointer-events-none absolute inset-0 z-20 opacity-0" />
           <div className="cinematic-grain pointer-events-none absolute inset-0 z-30" />
 
-          <div className="absolute bottom-14 left-5 z-40 max-w-[min(720px,calc(100vw-2.5rem))] sm:bottom-20 sm:left-10 lg:left-16">
+          <div className="cinematic-scene-copy-panel absolute bottom-14 left-5 z-40 max-w-[min(720px,calc(100vw-2.5rem))] sm:bottom-20 sm:left-10 lg:left-16">
             <p className="journey-story-cue mb-4 inline-flex rounded-full border border-[#e8c77a]/24 bg-black/24 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#e8c77a] opacity-0 backdrop-blur-md">Departure pulse</p>
             <p className="cinematic-scene-tone text-xs font-semibold uppercase tracking-[0.28em] text-[#f4b7c9]">{cinematicStoryScenes[0].tone}</p>
             <p className="cinematic-scene-day mt-5 text-sm font-semibold uppercase tracking-[0.26em] text-[#e8c77a]">{cinematicStoryScenes[0].day}</p>
-            <h2 className="cinematic-scene-title mt-3 text-5xl font-semibold leading-[0.96] text-[#fff8e7] [text-shadow:0_3px_28px_rgba(0,0,0,0.68)] sm:text-7xl lg:text-8xl">{cinematicStoryScenes[0].title}</h2>
+            <h2 className="cinematic-scene-title mt-3 text-[clamp(2.35rem,12vw,4.5rem)] font-semibold leading-[0.96] text-[#fff8e7] [text-shadow:0_3px_28px_rgba(0,0,0,0.68)] sm:text-7xl lg:text-8xl">{cinematicStoryScenes[0].title}</h2>
             <p className="cinematic-scene-copy mt-5 max-w-xl text-base leading-7 text-white/78 sm:text-lg">{cinematicStoryScenes[0].copy}</p>
             <div className="mt-6 inline-flex items-center gap-3 rounded-full border border-[#e8c77a]/28 bg-black/24 px-4 py-2 text-sm font-semibold text-[#fff8e7] shadow-2xl shadow-black/20 backdrop-blur-md">
               <span className="h-1.5 w-1.5 rounded-full bg-[#e8c77a] shadow-[0_0_14px_rgba(232,199,122,0.9)]" />
