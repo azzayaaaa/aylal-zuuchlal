@@ -32,7 +32,7 @@ export function LoginForm({
   const googleHref = `/api/auth/google?redirect=${encodeURIComponent(next)}`;
 
   return (
-    <div className="mt-6">
+    <div className="mt-5 sm:mt-6">
       {!adminOnly && !userOnly ? (
         <div className="grid grid-cols-2 rounded-[8px] bg-[#f7f1e8] p-1 ring-1 ring-[#e1d8c8]">
           <button
@@ -57,23 +57,23 @@ export function LoginForm({
       ) : null}
 
       {mode === "user" || userOnly ? (
-        <form action={userAction} className="mt-5 space-y-4">
+        <form action={userAction} className="mt-4 space-y-3 sm:mt-5 sm:space-y-4">
           <input type="hidden" name="next" value={next} />
           <Link
             href={googleHref}
-            className="group inline-flex h-13 w-full items-center justify-center gap-3 rounded-full border border-[#d8cebd] bg-white px-5 font-semibold text-[#18211f] shadow-sm transition hover:border-[#e8c77a] hover:shadow-lg hover:shadow-[#e8c77a]/10"
+            className="group inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-full border border-[#d8cebd] bg-white px-4 py-3 text-sm font-semibold text-[#18211f] shadow-sm transition hover:border-[#e8c77a] hover:shadow-lg hover:shadow-[#e8c77a]/10 sm:min-h-13 sm:px-5 sm:text-base"
           >
             <GoogleIcon />
             Google-ээр шууд нэвтрэх
           </Link>
 
-          <div className="flex items-center gap-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[#9a8361]">
+          <div className="flex items-center gap-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#9a8361] sm:text-xs sm:tracking-[0.16em]">
             <span className="h-px flex-1 bg-[#e3d5bd]" />
             эсвэл
             <span className="h-px flex-1 bg-[#e3d5bd]" />
           </div>
 
-          <p className="rounded-[8px] border border-[#d9efe5] bg-[#eef8f3] px-4 py-3 text-sm leading-6 text-[#1f5146]">
+          <p className="rounded-[8px] border border-[#d9efe5] bg-[#eef8f3] px-3 py-2.5 text-sm leading-6 text-[#1f5146] sm:px-4 sm:py-3">
             Утасны дугаар эсвэл имэйлээр нэвтэрвэл booking wizard шууд нээгдэнэ.
           </p>
 
@@ -86,7 +86,7 @@ export function LoginForm({
                 required
                 inputMode="email"
                 autoComplete="email"
-                className="h-13 w-full rounded-[8px] border border-[#d8cebd] bg-white pl-11 pr-4 outline-none transition focus:border-[#276457] focus:ring-2 focus:ring-[#276457]/20"
+                className="min-h-12 w-full rounded-[8px] border border-[#d8cebd] bg-white py-3 pl-11 pr-4 text-base outline-none transition focus:border-[#276457] focus:ring-2 focus:ring-[#276457]/20 sm:min-h-13"
                 placeholder="+976 99119911 эсвэл email@example.com"
               />
             </div>
@@ -101,7 +101,7 @@ export function LoginForm({
                 type="password"
                 required
                 autoComplete="current-password"
-                className="h-13 w-full rounded-[8px] border border-[#d8cebd] bg-white pl-11 pr-4 outline-none transition focus:border-[#276457] focus:ring-2 focus:ring-[#276457]/20"
+                className="min-h-12 w-full rounded-[8px] border border-[#d8cebd] bg-white py-3 pl-11 pr-4 text-base outline-none transition focus:border-[#276457] focus:ring-2 focus:ring-[#276457]/20 sm:min-h-13"
                 placeholder="Нууц үгээ оруулна уу"
               />
             </div>
@@ -109,10 +109,10 @@ export function LoginForm({
 
           <button
             disabled={isUserPending}
-            className="inline-flex h-13 w-full items-center justify-center gap-2 rounded-full bg-[#276457] px-5 font-semibold text-white shadow-xl shadow-[#276457]/18 transition hover:bg-[#1f5146] disabled:opacity-60"
+            className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#276457] px-5 py-3 font-semibold text-white shadow-xl shadow-[#276457]/18 transition hover:bg-[#1f5146] disabled:opacity-60 sm:min-h-13"
           >
             <LogIn className="h-4 w-4" />
-            {isUserPending ? "Нэвтэрч байна..." : "Нэвтрээд захиалах"}
+            {isUserPending ? "Нэвтэрч байна..." : "Нэвтэрээд захиалах"}
           </button>
           {userState.error ? (
             <p className="rounded-[8px] bg-[#fff1df] px-4 py-3 text-sm text-[#7b481c]">
@@ -130,14 +130,14 @@ export function LoginForm({
                 name="password"
                 type="password"
                 required
-                className="h-13 w-full rounded-[8px] border border-[#d8cebd] bg-white pl-11 pr-4 outline-none transition focus:border-[#276457] focus:ring-2 focus:ring-[#276457]/20"
+                className="min-h-12 w-full rounded-[8px] border border-[#d8cebd] bg-white py-3 pl-11 pr-4 text-base outline-none transition focus:border-[#276457] focus:ring-2 focus:ring-[#276457]/20 sm:min-h-13"
                 placeholder="Админ нууц үг"
               />
             </div>
           </label>
           <button
             disabled={isAdminPending}
-            className="mt-5 inline-flex h-13 w-full items-center justify-center gap-2 rounded-full bg-[#276457] px-5 font-semibold text-white transition hover:bg-[#1f5146] disabled:opacity-60"
+            className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#276457] px-5 py-3 font-semibold text-white transition hover:bg-[#1f5146] disabled:opacity-60 sm:min-h-13"
           >
             <LogIn className="h-4 w-4" />
             {isAdminPending ? "Нэвтэрч байна..." : "Админ нэвтрэх"}
@@ -155,7 +155,7 @@ export function LoginForm({
 
 function GoogleIcon() {
   return (
-    <svg className="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
+    <svg className="h-5 w-5 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
       <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
       <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C4 20.53 7.7 23 12 23z" />
       <path fill="#FBBC05" d="M5.84 14.1c-.22-.66-.35-1.36-.35-2.1s.13-1.44.35-2.1V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l3.66-2.84z" />
