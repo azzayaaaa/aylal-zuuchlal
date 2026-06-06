@@ -19,10 +19,13 @@ model Inquiry {
   preferredDate DateTime?
   paymentMethod  String   @default("bank")
   paymentStatus  String   @default("pending")
+  paymentProofUrl String?  @db.Text
   visaStatus      String?
   passportStatus  String?
   budget         String?
   bookingCode    String?
+  adminNote      String?  @db.Text
+  followUpAt     DateTime?
   reminderSentAt DateTime?
   message       String?  @db.Text
   status        String   @default("new")
@@ -33,6 +36,7 @@ model Inquiry {
   @@index([email])
   @@index([phone])
   @@index([bookingCode])
+  @@index([followUpAt])
   @@index([preferredDate, reminderSentAt])
   @@map("inquiries")
 }

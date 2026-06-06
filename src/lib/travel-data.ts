@@ -46,8 +46,7 @@ export const company = {
   tagline: "Япон аялал, маршрут, буудал, тээвэр, захиалгыг нэг дор.",
   phone: "7011 1179",
   email: "info@sakuratravel.mn",
-  location:
-    "UBH Center 15 давхар, #1516 тоот. Багшийн дээдийн урд, Сүхбаатар дүүрэг, Улаанбаатар",
+  location: "UBH Center 15 давхар, #1516 тоот. Багшийн дээдийн урд, Сүхбаатар дүүрэг, Улаанбаатар",
 };
 
 export const tokyoFujiJourney = [
@@ -210,15 +209,13 @@ export const blogPosts: BlogPost[] = [
   {
     title: "Сакура улиралд Токиод хаана зураг авах вэ?",
     category: "Аяллын зөвлөгөө",
-    excerpt:
-      "Ueno, Meguro, Shinjuku Gyoen зэрэг алдартай цэгүүдийг хэрхэн төлөвлөх тухай.",
+    excerpt: "Ueno, Meguro, Shinjuku Gyoen зэрэг алдартай цэгүүдийг хэрхэн төлөвлөх тухай.",
     readTime: "5 мин",
   },
   {
     title: "Disneyland руу хүүхэдтэй явахад бэлдэх зүйлс",
     category: "Гэр бүл",
-    excerpt:
-      "Ticket, stroller, хоол, амралтын цаг, hotel location сонгох практик зөвлөгөө.",
+    excerpt: "Ticket, stroller, хоол, амралтын цаг, hotel location сонгох практик зөвлөгөө.",
     readTime: "3 мин",
   },
 ];

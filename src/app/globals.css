@@ -335,6 +335,282 @@ body {
     linear-gradient(135deg, #fffaf0, #f5ead3);
 }
 
+.booking-shell {
+  animation: premium-panel-in 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.booking-step-panel {
+  animation: booking-step-swap 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.availability-day {
+  transform: translateZ(0);
+}
+
+.availability-day:hover {
+  animation: soft-lift 420ms ease both;
+}
+
+.payment-qr-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.payment-qr-card::after {
+  position: absolute;
+  inset: -35%;
+  content: "";
+  background: linear-gradient(115deg, transparent 35%, rgb(232 185 94 / 0.18), transparent 65%);
+  animation: qr-scan 2.8s ease-in-out infinite;
+}
+
+.proof-upload-card {
+  animation: proof-breathe 3.4s ease-in-out infinite;
+}
+
+.booking-micro-card {
+  animation: micro-card-float 5.6s ease-in-out infinite;
+}
+
+.booking-micro-card:nth-child(2) {
+  animation-delay: 320ms;
+}
+
+.booking-micro-card:nth-child(3) {
+  animation-delay: 640ms;
+}
+
+.confirmed-stamp {
+  position: relative;
+}
+
+.confirmed-stamp::after {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 2;
+  padding: 0.45rem 0.7rem;
+  border: 2px solid rgb(39 100 87 / 0.58);
+  border-radius: 6px;
+  color: rgb(39 100 87 / 0.72);
+  content: "CONFIRMED";
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  transform: rotate(-8deg) scale(0.88);
+  animation: stamp-pop 760ms cubic-bezier(0.22, 1, 0.36, 1) 360ms both;
+}
+
+.chat-panel {
+  transform-origin: bottom right;
+  animation: chat-pop 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.chat-launcher {
+  animation: chat-breathe 3.2s ease-in-out infinite;
+}
+
+.chat-bubble {
+  animation: bubble-in 260ms ease both;
+}
+
+.typing-dots span {
+  display: inline-block;
+  width: 0.38rem;
+  height: 0.38rem;
+  margin-right: 0.2rem;
+  border-radius: 999px;
+  background: #276457;
+  animation: typing-dot 960ms ease-in-out infinite;
+}
+
+.typing-dots span:nth-child(2) {
+  animation-delay: 140ms;
+}
+
+.typing-dots span:nth-child(3) {
+  animation-delay: 280ms;
+}
+
+.admin-stat-card,
+.kanban-pill,
+.admin-row,
+.my-booking-card,
+.progress-step {
+  animation: surface-rise 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.admin-row[open] summary {
+  animation: admin-success-sheen 760ms ease both;
+}
+
+.kanban-pill:hover {
+  animation: kanban-pulse 560ms ease both;
+}
+
+.progress-step {
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-step::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent, rgb(255 255 255 / 0.42), transparent);
+  content: "";
+  transform: translateX(-120%);
+  animation: tracker-sheen 2.8s ease-in-out infinite;
+}
+
+@keyframes premium-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes booking-step-swap {
+  from {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateX(18px);
+  }
+
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateX(0);
+  }
+}
+
+@keyframes soft-lift {
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes micro-card-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes stamp-pop {
+  0% {
+    opacity: 0;
+    transform: rotate(-12deg) scale(1.45);
+  }
+
+  60% {
+    opacity: 1;
+    transform: rotate(-8deg) scale(0.82);
+  }
+
+  100% {
+    opacity: 1;
+    transform: rotate(-8deg) scale(0.88);
+  }
+}
+
+@keyframes chat-pop {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes chat-breathe {
+  0%,
+  100% {
+    box-shadow: 0 18px 42px rgb(232 185 94 / 0.22);
+  }
+
+  50% {
+    box-shadow: 0 18px 58px rgb(232 185 94 / 0.42);
+  }
+}
+
+@keyframes bubble-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes typing-dot {
+  0%,
+  100% {
+    opacity: 0.36;
+    transform: translateY(0);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes surface-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes admin-success-sheen {
+  0% {
+    background: linear-gradient(90deg, transparent, rgb(238 248 243 / 0.9), transparent);
+  }
+
+  100% {
+    background: transparent;
+  }
+}
+
+@keyframes kanban-pulse {
+  50% {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 34px rgb(123 72 28 / 0.1);
+  }
+}
+
+@keyframes tracker-sheen {
+  0%,
+  42% {
+    transform: translateX(-120%);
+  }
+
+  70%,
+  100% {
+    transform: translateX(120%);
+  }
+}
+
 @keyframes shibuya-reflection {
   0%,
   100% {
@@ -470,6 +746,28 @@ body {
   }
 }
 
+@keyframes qr-scan {
+  0%,
+  42% {
+    transform: translateX(-42%) translateY(-42%) rotate(12deg);
+  }
+
+  100% {
+    transform: translateX(42%) translateY(42%) rotate(12deg);
+  }
+}
+
+@keyframes proof-breathe {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(215 163 79 / 0);
+  }
+
+  50% {
+    box-shadow: 0 18px 46px -28px rgb(215 163 79 / 0.72);
+  }
+}
+
 @media (max-width: 767px) {
   .journey-section {
     min-height: 100svh;
@@ -565,6 +863,23 @@ body {
     animation: none;
     opacity: 1;
     transform: none;
+  }
+
+  .booking-shell,
+  .booking-step-panel,
+  .booking-micro-card,
+  .confirmed-stamp::after,
+  .chat-panel,
+  .chat-launcher,
+  .chat-bubble,
+  .typing-dots span,
+  .admin-stat-card,
+  .kanban-pill,
+  .admin-row,
+  .my-booking-card,
+  .progress-step,
+  .progress-step::after {
+    animation: none;
   }
 
   .film-scene,

@@ -17,6 +17,7 @@ export type GatewayBookingPayload = {
   children: number;
   preferredDate?: string;
   paymentMethod: string;
+  paymentProofUrl?: string;
   budget?: string;
   message?: string;
 };

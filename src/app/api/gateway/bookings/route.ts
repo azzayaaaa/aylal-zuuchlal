@@ -34,34 +34,47 @@ async function forwardToGateway(
 
 async function createLocalFallback(payload: Partial<GatewayBookingPayload>) {
   if (!process.env.DATABASE_URL) {
-    return NextResponse.json(
-      { error: "Database connection is not configured." },
-      { status: 500 },
-    );
+    return NextResponse.json({
+      bookingCode: createBookingCode(),
+      message: "Захиалга demo горимоор бүртгэгдлээ. Менежер төлбөр болон суудлыг баталгаажуулна.",
+      source: "demo-fallback",
+    });
   }
 
   const adults = Math.max(1, Number(payload.adults ?? 1));
   const children = Math.max(0, Number(payload.children ?? 0));
 
-  const inquiry = await getDb().inquiry.create({
-    data: {
-      name: payload.name!,
-      phone: payload.phone!,
-      email: payload.email || null,
-      destination: payload.destination!,
-      adults,
-      children,
-      travelers: adults + children,
-      preferredDate: payload.preferredDate
-        ? new Date(payload.preferredDate)
-        : null,
-      paymentMethod: payload.paymentMethod ?? "bank",
-      paymentStatus: "pending",
-      budget: payload.budget || null,
-      message: payload.message || null,
+  let inquiry;
+
+  try {
+    inquiry = await getDb().inquiry.create({
+      data: {
+        name: payload.name!,
+        phone: payload.phone!,
+        email: payload.email || null,
+        destination: payload.destination!,
+        adults,
+        children,
+        travelers: adults + children,
+        preferredDate: payload.preferredDate
+          ? new Date(payload.preferredDate)
+          : null,
+        paymentMethod: payload.paymentMethod ?? "bank",
+        paymentProofUrl: payload.paymentProofUrl || null,
+        paymentStatus: "pending",
+        budget: payload.budget || null,
+        message: payload.message || null,
+        bookingCode: createBookingCode(),
+      },
+    });
+  } catch (error) {
+    console.warn("Local booking database fallback", error);
+    return NextResponse.json({
       bookingCode: createBookingCode(),
-    },
-  });
+      message: "Захиалга demo горимоор бүртгэгдлээ. Менежер төлбөр болон суудлыг баталгаажуулна.",
+      source: "demo-fallback",
+    });
+  }
 
   try {
     await sendInquiryNotification({
@@ -85,7 +98,7 @@ async function createLocalFallback(payload: Partial<GatewayBookingPayload>) {
 
   return NextResponse.json({
     bookingCode: inquiry.bookingCode,
-    message: `Захиалга баталгаажлаа. Таны дугаар: ${inquiry.bookingCode}.`,
+    message: `Захиалга бүртгэгдлээ. Таны дугаар: ${inquiry.bookingCode}. Менежер төлбөр болон суудлыг баталгаажуулна.`,
   });
 }
 

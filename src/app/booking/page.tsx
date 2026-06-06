@@ -2,7 +2,7 @@ import { BookingExperience } from "@/components/booking-experience";
 import { getUserSession } from "@/lib/auth";
 
 type BookingPageProps = {
-  searchParams: Promise<{ tour?: string }>;
+  searchParams: Promise<{ tour?: string; prefill?: string }>;
 };
 
 export default async function BookingPage({ searchParams }: BookingPageProps) {
@@ -14,6 +14,7 @@ export default async function BookingPage({ searchParams }: BookingPageProps) {
       initialTourSlug={params.tour}
       initialEmail={user?.email}
       initialPhone={user?.phone}
+      prefillText={params.prefill}
     />
   );
 }

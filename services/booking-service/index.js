@@ -68,6 +68,7 @@ createService({
           travelers: adults + children,
           preferredDate: payload.preferredDate ? new Date(payload.preferredDate) : null,
           paymentMethod: payload.paymentMethod || "bank",
+          paymentProofUrl: payload.paymentProofUrl || null,
           paymentStatus: "pending",
           budget: payload.budget || null,
           message: payload.message || null,
@@ -89,7 +90,7 @@ createService({
       sendJson(response, 201, {
         booking: serialized,
         bookingCode: inquiry.bookingCode,
-        message: `Zahialga batalgaajlaa. Tanii dugaar: ${inquiry.bookingCode}.`,
+        message: `Захиалга бүртгэгдлээ. Таны дугаар: ${inquiry.bookingCode}.`,
       });
       return;
     }
