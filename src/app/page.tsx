@@ -3,11 +3,17 @@ import Link from "next/link";
 import {
   ArrowRight,
   CalendarDays,
+  CheckCircle2,
+  Clock3,
   HelpCircle,
+  MapPinned,
   Plane,
   Quote,
   ShieldCheck,
   Star,
+  Users,
+  WalletCards,
+  XCircle,
 } from "lucide-react";
 import { ChatBot } from "@/components/chat-bot";
 import { GsapLanding } from "@/components/gsap-landing";
@@ -352,6 +358,61 @@ const featuredTourCards = [
   };
 });
 
+const heroFacts = [
+  { icon: Clock3, label: "Хугацаа", value: "7 өдөр / 6 шөнө" },
+  { icon: WalletCards, label: "Үнэ", value: "3,990,000₮-с" },
+  { icon: MapPinned, label: "Маршрут", value: "Tokyo + Fuji + Disney" },
+  { icon: Users, label: "Бүлэг", value: "4-18 хүн" },
+];
+
+const includedItems = [
+  "Зочид буудлын зохион байгуулалт",
+  "Tokyo хотын маршрут төлөвлөлт",
+  "Fuji, Kawaguchiko, Oshino Hakkai чиглэл",
+  "Shopping болон Disney сонголтын зөвлөгөө",
+  "Захиалгын имэйл баталгаажуулалт",
+];
+
+const notIncludedItems = [
+  "Нислэгийн үнэ улирлаас хамаарч тусдаа тооцогдоно",
+  "Виз болон хувийн хэрэглээний зардал",
+  "Нэмэлт үзвэр, park ticket, хувийн shopping",
+];
+
+const simpleItinerary = [
+  ["Day 1", "Улаанбаатар → Токио", "Нислэг, буудалдаа байрлах, амрах"],
+  ["Day 2", "Asakusa + Senso-ji", "Хуучин Tokyo, сүмийн гудамж, Skytree оройн үзэмж"],
+  ["Day 3", "Shibuya + city walk", "Scramble crossing, shopping, night view"],
+  ["Day 4", "Fuji чиглэл", "Mount Fuji, Lake Kawaguchiko, зураг авах цэгүүд"],
+  ["Day 5", "Oshino + Oishi Park", "Булгийн тосгон, Fuji panorama, тайван өдөр"],
+  ["Day 6", "Gotemba outlet", "Premium shopping, cafe break, буцах бэлтгэл"],
+  ["Day 7", "Disneyland / Akihabara", "Гэр бүл бол Disney, anime сонирхолтой бол Akihabara"],
+];
+
+const packageOptions = [
+  {
+    title: "Tokyo-Fuji үндсэн багц",
+    price: "3,990,000₮-с",
+    duration: "7 өдөр / 6 шөнө",
+    fit: "Хос, найзууд, зураг авах дуртай аялагчдад",
+    href: "/booking?tour=tokyo-fuji",
+  },
+  {
+    title: "Disneyland гэр бүлийн багц",
+    price: "4,590,000₮-с",
+    duration: "6 өдөр / 5 шөнө",
+    fit: "Хүүхэдтэй гэр бүл, тайван маршрутад",
+    href: "/booking?tour=disney",
+  },
+  {
+    title: "Shopping / Anime багц",
+    price: "3,290,000₮-с",
+    duration: "5 өдөр / 4 шөнө",
+    fit: "Akihabara, Harajuku, outlet shopping сонирхогчдод",
+    href: "/booking?tour=shopping",
+  },
+];
+
 export default function Home() {
   const mainTour = destinations[0];
 
@@ -379,24 +440,141 @@ export default function Home() {
           ))}
         </div>
 
-        <div className="mx-auto flex min-h-[calc(100svh-4rem)] max-w-7xl items-end px-4 pb-16 sm:px-5 lg:px-8">
+        <div className="mx-auto flex min-h-[calc(100svh-4rem)] max-w-7xl items-end px-4 pb-12 sm:px-5 sm:pb-16 lg:px-8">
           <div className="max-w-5xl">
-            <h1 className="overflow-hidden text-5xl font-semibold leading-[0.96] tracking-normal sm:text-7xl lg:text-8xl">
-              <span className="split-line block">Sakura Travel</span>
-              <span className="split-line block">Tokyo-Fuji аялал</span>
-            </h1>
-            <p className="split-line mt-6 max-w-2xl text-base leading-8 text-white/84 sm:text-xl">
-              Улаанбаатараас Tokyo, Asakusa, Skytree, Shibuya, Fuji, Kawaguchiko, Disneyland хүртэл
-              хөдөлгөөнт маршрутаар дагах premium аялал.
+            <p className="split-line mb-4 inline-flex rounded-full border border-[#e8c77a]/28 bg-black/24 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#e8c77a] backdrop-blur">
+              Улаанбаатараас Япон руу
             </p>
+            <h1 className="overflow-hidden text-[clamp(2.8rem,12vw,5.8rem)] font-semibold leading-[0.98] tracking-normal sm:text-7xl lg:text-8xl">
+              <span className="split-line block">Токио-Фүжи</span>
+              <span className="split-line block">7 өдөр / 6 шөнийн аялал</span>
+            </h1>
+            <p className="split-line mt-5 max-w-2xl text-base leading-8 text-white/84 sm:text-xl">
+              Tokyo, Asakusa, Shibuya, Mount Fuji, Kawaguchiko, Gotemba shopping, Disneyland/Akihabara сонголттой багц.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3 text-sm font-semibold text-white/88">
+              <span className="rounded-full border border-white/16 bg-white/12 px-4 py-2 backdrop-blur">3,990,000₮-с</span>
+              <span className="rounded-full border border-white/16 bg-white/12 px-4 py-2 backdrop-blur">4-18 хүн</span>
+              <span className="rounded-full border border-white/16 bg-white/12 px-4 py-2 backdrop-blur">Fuji + Tokyo + Disney</span>
+            </div>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link href="/booking" className="magnetic-cta inline-flex h-13 items-center justify-center gap-2 rounded-full bg-[#e8b95e] px-6 py-4 font-semibold text-[#1c1710] shadow-2xl shadow-[#e8b95e]/25 transition hover:bg-[#f6cf7a]">
                 Захиалах
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <a href="#journey" className="inline-flex h-13 items-center justify-center gap-2 rounded-full border border-white/35 px-6 py-4 font-semibold text-white transition hover:bg-white/12">
-                Маршрут үзэх
+              <a href="#overview" className="inline-flex h-13 items-center justify-center gap-2 rounded-full border border-white/35 px-6 py-4 font-semibold text-white transition hover:bg-white/12">
+                Дэлгэрэнгүй харах
               </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="overview" className="bg-[#fffaf0] py-14 text-[#17211d] sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-5 lg:px-8">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {heroFacts.map(({ icon: Icon, label, value }) => (
+              <div key={label} className="rounded-[8px] border border-[#ead9c4] bg-white p-4 shadow-sm">
+                <Icon className="h-5 w-5 text-[#b0184c]" />
+                <p className="mt-3 text-xs font-semibold uppercase tracking-[0.16em] text-[#8a7353]">{label}</p>
+                <p className="mt-1 text-xl font-semibold text-[#17211d]">{value}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-12 grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[#b0184c]">Аяллын санал</p>
+              <h2 className="mt-3 text-3xl font-semibold leading-tight sm:text-5xl">
+                Юу авах гэж байгаагаа шууд ойлгох аяллын багц.
+              </h2>
+              <p className="mt-5 max-w-2xl text-base leading-8 text-[#5d655f] sm:text-lg">
+                Энэ бол Япон руу анх удаа эсвэл гэр бүл, хос, найзуудтайгаа явахад тохиромжтой Tokyo-Fuji төвтэй аяллын санал. Эцсийн үнэ хүний тоо, явах өдөр, буудал, нислэг, нэмэлт үйлчилгээний сонголтоос хамаарна.
+              </p>
+              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+                <Link href="/booking" className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#276457] px-6 font-semibold text-white transition hover:bg-[#1f5146]">
+                  Захиалга эхлүүлэх
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <a href="#journey" className="inline-flex h-12 items-center justify-center rounded-full border border-[#d7a34f] px-6 font-semibold text-[#8b641d] transition hover:bg-[#fff3d3]">
+                  Cinematic маршрут үзэх
+                </a>
+              </div>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="rounded-[8px] border border-[#d9efe5] bg-[#eef8f3] p-5">
+                <h3 className="flex items-center gap-2 font-semibold text-[#1f5146]">
+                  <CheckCircle2 className="h-5 w-5" />
+                  Багтсан зүйлс
+                </h3>
+                <div className="mt-4 space-y-3">
+                  {includedItems.map((item) => (
+                    <p key={item} className="flex gap-2 text-sm leading-6 text-[#31584d]">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#276457]" />
+                      {item}
+                    </p>
+                  ))}
+                </div>
+              </div>
+              <div className="rounded-[8px] border border-[#f0d7bd] bg-[#fff7ed] p-5">
+                <h3 className="flex items-center gap-2 font-semibold text-[#7b481c]">
+                  <XCircle className="h-5 w-5" />
+                  Тусдаа тооцогдох зүйлс
+                </h3>
+                <div className="mt-4 space-y-3">
+                  {notIncludedItems.map((item) => (
+                    <p key={item} className="flex gap-2 text-sm leading-6 text-[#765332]">
+                      <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-[#b36a2c]" />
+                      {item}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_0.78fr]">
+            <div>
+              <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+                <div>
+                  <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[#b0184c]">7 өдрийн хөтөлбөр</p>
+                  <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">Энгийнээр харвал ийм маршруттай.</h2>
+                </div>
+                <Link href="/booking" className="inline-flex h-11 items-center justify-center rounded-full bg-[#e8b95e] px-5 font-semibold text-[#1c1710]">
+                  Захиалах
+                </Link>
+              </div>
+              <div className="mt-6 divide-y divide-[#ead9c4] overflow-hidden rounded-[8px] border border-[#ead9c4] bg-white">
+                {simpleItinerary.map(([day, title, text]) => (
+                  <div key={day} className="grid gap-2 p-4 sm:grid-cols-[92px_1fr] sm:gap-5">
+                    <p className="font-mono text-sm font-semibold text-[#b0184c]">{day}</p>
+                    <div>
+                      <h3 className="font-semibold text-[#17211d]">{title}</h3>
+                      <p className="mt-1 text-sm leading-6 text-[#5d655f]">{text}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[#b0184c]">Багцын сонголт</p>
+              {packageOptions.map((item) => (
+                <Link key={item.title} href={item.href} className="block rounded-[8px] border border-[#ead9c4] bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[#d7a34f] hover:shadow-lg">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <h3 className="font-semibold text-[#17211d]">{item.title}</h3>
+                      <p className="mt-2 text-sm leading-6 text-[#5d655f]">{item.fit}</p>
+                    </div>
+                    <ArrowRight className="mt-1 h-5 w-5 shrink-0 text-[#b0184c]" />
+                  </div>
+                  <div className="mt-4 flex flex-wrap gap-2 text-sm font-semibold">
+                    <span className="rounded-full bg-[#f7f1e8] px-3 py-1 text-[#276457]">{item.duration}</span>
+                    <span className="rounded-full bg-[#ffe5f1] px-3 py-1 text-[#b0184c]">{item.price}</span>
+                  </div>
+                </Link>
+              ))}
             </div>
           </div>
         </div>
@@ -474,7 +652,7 @@ export default function Home() {
         <div className="absolute inset-x-0 bottom-0 -z-10 h-44 bg-gradient-to-t from-[#10201d] to-transparent" />
         <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-5 lg:grid-cols-[0.88fr_1.12fr] lg:px-8">
           <div className="lg:sticky lg:top-24 lg:self-start">
-            <p className="blur-reveal text-sm font-semibold uppercase tracking-[0.22em] text-[#e8c77a]">Main package</p>
+            <p className="blur-reveal text-sm font-semibold uppercase tracking-[0.22em] text-[#e8c77a]">Үндсэн багц</p>
             <h2 className="blur-reveal mt-4 max-w-2xl text-4xl font-semibold leading-tight text-[#fff8e7] sm:text-6xl">{mainTour.title}</h2>
             <p className="blur-reveal mt-5 max-w-xl text-lg leading-8 text-white/72">{mainTour.description}</p>
             <div className="blur-reveal mt-8 flex flex-wrap gap-3">
@@ -503,9 +681,9 @@ export default function Home() {
             </div>
             <div className="grid gap-4 sm:grid-cols-3">
               {[
-                ["Route", mainTour.route],
-                ["Season", mainTour.bestSeason],
-                ["Group", mainTour.groupSize],
+                ["Маршрут", mainTour.route],
+                ["Улирал", mainTour.bestSeason],
+                ["Бүлэг", mainTour.groupSize],
               ].map(([label, value]) => (
                 <div key={label} className="tilt-card rounded-[8px] border border-[#e8c77a]/18 bg-[#fff8e7]/94 p-5 text-[#17211d] shadow-[0_18px_50px_rgba(0,0,0,0.2)] backdrop-blur">
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#b0184c]">{label}</p>
@@ -519,8 +697,8 @@ export default function Home() {
 
       <section className="destination-gallery overflow-hidden bg-[#0e211c] py-20 text-white sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-5 lg:px-8">
-          <p className="blur-reveal text-sm font-semibold uppercase tracking-[0.22em] text-[#e8b95e]">Destination gallery</p>
-          <h2 className="blur-reveal mt-3 max-w-3xl text-4xl font-semibold sm:text-5xl">Tokyo, Fuji, Disney, shopping нэг cinematic урсгалд.</h2>
+          <p className="blur-reveal text-sm font-semibold uppercase tracking-[0.22em] text-[#e8b95e]">Аяллын зураглал</p>
+          <h2 className="blur-reveal mt-3 max-w-3xl text-4xl font-semibold sm:text-5xl">Tokyo, Fuji, Disney, shopping нэг урсгалд.</h2>
         </div>
         <div className="destination-track mt-10 flex w-max flex-row gap-4 px-4 will-change-transform sm:mt-12 sm:gap-5 sm:px-5 lg:px-8">
           {featuredTourCards.map((card) => (
@@ -532,7 +710,7 @@ export default function Home() {
                   {card.day}
                 </span>
                 <span className="rounded-full border border-white/16 bg-white/12 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/82 backdrop-blur">
-                  {card.seatsLeft} seats
+                  {card.seatsLeft} суудал
                 </span>
               </div>
               <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6">
@@ -570,7 +748,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(7,18,15,0.74),rgba(7,18,15,0.18)_52%,rgba(7,18,15,0.48))]" />
         <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-end px-4 pb-16 sm:px-5 lg:px-8">
           <div className="max-w-3xl">
-            <p className="fuji-depth-copy text-sm font-semibold uppercase tracking-[0.24em] text-[#e8c77a]">Fuji depth parallax</p>
+            <p className="fuji-depth-copy text-sm font-semibold uppercase tracking-[0.24em] text-[#e8c77a]">Фүжи өдөр</p>
             <h2 className="fuji-depth-copy mt-4 text-5xl font-semibold leading-[0.95] text-[#fff8e7] sm:text-7xl">Fuji & Kawaguchiko</h2>
             <p className="fuji-depth-copy mt-5 max-w-xl text-xl leading-8 text-white/78">Японы хамгийн мартагдашгүй өдөр</p>
           </div>
@@ -584,7 +762,7 @@ export default function Home() {
         <div className="shibuya-reflection pointer-events-none absolute inset-x-0 bottom-0 h-1/2 opacity-70" />
         <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-end px-4 pb-16 sm:px-5 lg:px-8">
           <div className="max-w-3xl">
-            <p className="shibuya-copy text-sm font-semibold uppercase tracking-[0.24em] text-[#f4b7c9]">Tokyo never sleeps</p>
+            <p className="shibuya-copy text-sm font-semibold uppercase tracking-[0.24em] text-[#f4b7c9]">Токиогийн шөнө</p>
             <h2 className="shibuya-copy mt-4 text-5xl font-semibold leading-[0.95] text-[#fff8e7] sm:text-7xl">Shibuya Night</h2>
             <p className="shibuya-copy mt-5 max-w-xl text-lg leading-8 text-white/78">Neon, wet reflections, and the pulse of Tokyo after dark.</p>
           </div>
@@ -594,7 +772,7 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-5 lg:px-8">
           <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr]">
             <div>
-              <p className="blur-reveal text-sm font-semibold uppercase tracking-[0.22em] text-[#b0184c]">How booking works</p>
+              <p className="blur-reveal text-sm font-semibold uppercase tracking-[0.22em] text-[#b0184c]">Захиалга</p>
               <h2 className="blur-reveal mt-3 text-3xl font-semibold sm:text-4xl">Дөрвөн алхамтай цэвэр захиалга.</h2>
             </div>
             <div className="relative grid gap-3">
@@ -614,7 +792,7 @@ export default function Home() {
 
       <section className="reviews-section bg-[#f8f0df] py-20 text-[#15211d]">
         <div className="mx-auto max-w-7xl px-4 sm:px-5 lg:px-8">
-          <p className="blur-reveal text-sm font-semibold uppercase tracking-[0.22em] text-[#b0184c]">Reviews</p>
+          <p className="blur-reveal text-sm font-semibold uppercase tracking-[0.22em] text-[#b0184c]">Сэтгэгдэл</p>
           <div className="mt-8 grid gap-5 md:grid-cols-3">
             {reviews.map(([text, name]) => (
               <div key={name} className="review-card tilt-card rounded-[8px] bg-[#fffaf0] p-7 shadow-[0_24px_70px_rgba(45,32,16,0.10)] ring-1 ring-[#ead9c4]">
@@ -636,7 +814,7 @@ export default function Home() {
 
       <section id="faq" className="faq-section bg-[#fffaf0] py-16 text-[#15211d] sm:py-20">
         <div className="mx-auto max-w-4xl px-4 sm:px-5 lg:px-8">
-          <p className="blur-reveal text-sm font-semibold uppercase tracking-[0.22em] text-[#b0184c]">FAQ</p>
+          <p className="blur-reveal text-sm font-semibold uppercase tracking-[0.22em] text-[#b0184c]">Түгээмэл асуулт</p>
           <div className="mt-8 space-y-3">
             {faqs.map(([question, answer]) => (
               <div key={question} className="faq-item blur-reveal rounded-[8px] bg-white p-5 ring-1 ring-[#ead9c4]">
@@ -664,9 +842,9 @@ export default function Home() {
           <div className="max-w-3xl border-y border-white/12 py-10">
             <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.2em] text-[#e8b95e]">
               <ShieldCheck className="h-4 w-4" />
-              Protected booking
+              Баталгаатай захиалга
             </p>
-            <h2 className="mt-3 text-5xl font-semibold leading-[0.96] text-[#fff8e7] sm:text-7xl">Start Your Japan Journey</h2>
+            <h2 className="mt-3 text-5xl font-semibold leading-[0.96] text-[#fff8e7] sm:text-7xl">Япон аяллаа эндээс эхлүүлээрэй</h2>
             <p className="mt-5 max-w-2xl text-xl leading-8 text-white/76">{"\u0422\u0430\u043d\u044b \u0422\u043e\u043a\u0438\u043e-\u0424\u04af\u0436\u0438 \u0430\u044f\u043b\u0430\u043b \u044d\u043d\u0434\u044d\u044d\u0441 \u044d\u0445\u044d\u043b\u043d\u044d"}</p>
             <Link href="/booking" className="magnetic-cta mt-8 inline-flex h-13 items-center justify-center gap-2 rounded-full bg-[#e8b95e] px-6 py-4 font-semibold text-[#1c1710] transition hover:bg-[#f6cf7a]">
               <CalendarDays className="h-4 w-4" />
