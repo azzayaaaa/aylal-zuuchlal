@@ -124,8 +124,16 @@ function itineraryAnswer(prompt: string) {
 
 function instantAnswer(prompt: string) {
   const normalizedPrompt = normalize(prompt);
+  const normalizedWords = new Set(normalizedPrompt.split(" "));
   const quick = quickReplies.find((item) =>
-    item.patterns.some((pattern) => normalizedPrompt.includes(normalize(pattern))),
+    item.patterns.some((pattern) => {
+      const normalizedPattern = normalize(pattern);
+      if (["hi", "hello", "sn"].includes(normalizedPattern)) {
+        return normalizedWords.has(normalizedPattern);
+      }
+
+      return normalizedPrompt.includes(normalizedPattern);
+    }),
   );
 
   if (quick) return quick.answer;
