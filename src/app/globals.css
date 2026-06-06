@@ -273,6 +273,10 @@ body {
   transform-style: preserve-3d;
 }
 
+.destination-track {
+  transform: translateZ(0);
+}
+
 .booking-step {
   will-change: transform, opacity;
 }

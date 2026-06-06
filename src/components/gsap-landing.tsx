@@ -663,13 +663,21 @@ export function GsapLanding() {
 
       const gallery = document.querySelector<HTMLElement>(".destination-gallery");
       const track = document.querySelector<HTMLElement>(".destination-track");
-      if (gallery && track && window.matchMedia("(min-width: 768px)").matches) {
+      if (gallery && track) {
         const distance = () => Math.max(0, track.scrollWidth - gallery.clientWidth);
         if (distance() > 24) {
           gsap.to(track, {
             x: () => -distance(),
             ease: "none",
-            scrollTrigger: { trigger: gallery, start: "top top", end: () => `+=${distance()}`, scrub: true, pin: true, invalidateOnRefresh: true },
+            scrollTrigger: {
+              trigger: gallery,
+              start: () => window.matchMedia("(max-width: 767px)").matches ? "top 12%" : "top top",
+              end: () => `+=${distance()}`,
+              scrub: true,
+              pin: true,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+            },
           });
         }
       }

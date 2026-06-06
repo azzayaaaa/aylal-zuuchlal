@@ -517,15 +517,15 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="destination-gallery overflow-hidden bg-[#0e211c] py-24 text-white">
+      <section className="destination-gallery overflow-hidden bg-[#0e211c] py-20 text-white sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-5 lg:px-8">
           <p className="blur-reveal text-sm font-semibold uppercase tracking-[0.22em] text-[#e8b95e]">Destination gallery</p>
           <h2 className="blur-reveal mt-3 max-w-3xl text-4xl font-semibold sm:text-5xl">Tokyo, Fuji, Disney, shopping нэг cinematic урсгалд.</h2>
         </div>
-        <div className="destination-track mt-12 flex w-full flex-col gap-5 px-4 sm:px-5 md:w-max md:flex-row lg:px-8">
+        <div className="destination-track mt-10 flex w-max flex-row gap-4 px-4 will-change-transform sm:mt-12 sm:gap-5 sm:px-5 lg:px-8">
           {featuredTourCards.map((card) => (
-            <article key={`${card.title}-${card.slug}`} className="editorial-tour-card tilt-card group relative min-h-[560px] overflow-hidden rounded-[8px] border border-white/12 bg-white/8 shadow-2xl shadow-black/20 md:w-[520px]">
-              <Image src={card.image} alt={card.title} fill sizes="(min-width: 768px) 520px, 100vw" className="object-cover object-center transition duration-700 group-hover:scale-[1.04]" />
+            <article key={`${card.title}-${card.slug}`} className="editorial-tour-card tilt-card group relative min-h-[520px] w-[86vw] max-w-[520px] shrink-0 overflow-hidden rounded-[8px] border border-white/12 bg-white/8 shadow-2xl shadow-black/20 sm:min-h-[560px] md:w-[520px]">
+              <Image src={card.image} alt={card.title} fill sizes="(min-width: 768px) 520px, 86vw" className="object-cover object-center transition duration-700 group-hover:scale-[1.04]" />
               <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,17,14,0.05),rgba(7,17,14,0.42)_42%,rgba(7,17,14,0.92))]" />
               <div className="absolute inset-x-0 top-0 flex items-center justify-between gap-4 p-5">
                 <span className="rounded-full border border-[#e8c77a]/35 bg-black/22 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#e8c77a] backdrop-blur">
