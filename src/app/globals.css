@@ -277,6 +277,22 @@ body {
   transform: translateZ(0);
 }
 
+.overview-fact,
+.overview-copy,
+.overview-check-card,
+.overview-itinerary-row,
+.overview-package-card {
+  will-change: transform, opacity, filter;
+}
+
+.overview-itinerary-row {
+  transition: background-color 220ms ease;
+}
+
+.overview-itinerary-row:hover {
+  background-color: rgb(255 250 240 / 0.86);
+}
+
 .booking-step {
   will-change: transform, opacity;
 }

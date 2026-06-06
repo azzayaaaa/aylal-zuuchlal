@@ -197,6 +197,69 @@ export function GsapLanding() {
         scrollTrigger: { trigger: ".destination-gallery", start: "top 72%" },
       });
 
+      gsap.fromTo(".overview-fact", { y: 28, autoAlpha: 0, filter: "blur(6px)" }, {
+        y: 0,
+        autoAlpha: 1,
+        filter: "blur(0px)",
+        duration: 0.7,
+        ease: "power3.out",
+        stagger: 0.08,
+        scrollTrigger: { trigger: ".overview-section", start: "top 72%" },
+      });
+
+      gsap.fromTo(".overview-copy", { y: 34, autoAlpha: 0, filter: "blur(6px)" }, {
+        y: 0,
+        autoAlpha: 1,
+        filter: "blur(0px)",
+        duration: 0.78,
+        ease: "power3.out",
+        scrollTrigger: { trigger: ".overview-copy", start: "top 78%" },
+      });
+
+      gsap.fromTo(".overview-check-card", { y: 26, autoAlpha: 0, filter: "blur(6px)" }, {
+        y: 0,
+        autoAlpha: 1,
+        filter: "blur(0px)",
+        duration: 0.72,
+        ease: "power3.out",
+        stagger: 0.1,
+        scrollTrigger: { trigger: ".overview-check-card", start: "top 80%" },
+      });
+
+      gsap.fromTo(".overview-list-item", { x: -12, autoAlpha: 0 }, {
+        x: 0,
+        autoAlpha: 1,
+        duration: 0.42,
+        ease: "power3.out",
+        stagger: 0.04,
+        scrollTrigger: { trigger: ".overview-check-card", start: "top 72%" },
+      });
+
+      gsap.to(".overview-itinerary-fill", {
+        scaleY: 1,
+        ease: "none",
+        scrollTrigger: { trigger: ".overview-itinerary", start: "top 76%", end: "bottom 62%", scrub: true },
+      });
+
+      gsap.fromTo(".overview-itinerary-row", { x: -20, autoAlpha: 0 }, {
+        x: 0,
+        autoAlpha: 1,
+        duration: 0.56,
+        ease: "power3.out",
+        stagger: 0.055,
+        scrollTrigger: { trigger: ".overview-itinerary", start: "top 78%" },
+      });
+
+      gsap.fromTo(".overview-package-card", { x: 28, autoAlpha: 0, filter: "blur(5px)" }, {
+        x: 0,
+        autoAlpha: 1,
+        filter: "blur(0px)",
+        duration: 0.64,
+        ease: "power3.out",
+        stagger: 0.09,
+        scrollTrigger: { trigger: ".overview-package-card", start: "top 82%" },
+      });
+
       gsap.to(".booking-timeline-fill", {
         scaleY: 1,
         ease: "none",

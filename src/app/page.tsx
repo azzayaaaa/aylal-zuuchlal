@@ -470,20 +470,29 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="overview" className="bg-[#fffaf0] py-14 text-[#17211d] sm:py-20">
+      <section id="overview" className="overview-section relative isolate overflow-hidden bg-[#fffaf0] py-14 text-[#17211d] sm:py-20">
+        <Image src={japanImages.oishiPark} alt="Japan travel overview" fill sizes="100vw" className="pointer-events-none -z-30 object-cover object-center opacity-[0.06]" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 -z-20 h-40 bg-gradient-to-b from-[#0e211c]/10 to-transparent" />
         <div className="mx-auto max-w-7xl px-4 sm:px-5 lg:px-8">
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="overview-facts grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {heroFacts.map(({ icon: Icon, label, value }) => (
-              <div key={label} className="rounded-[8px] border border-[#ead9c4] bg-white p-4 shadow-sm">
-                <Icon className="h-5 w-5 text-[#b0184c]" />
-                <p className="mt-3 text-xs font-semibold uppercase tracking-[0.16em] text-[#8a7353]">{label}</p>
-                <p className="mt-1 text-xl font-semibold text-[#17211d]">{value}</p>
+              <div key={label} className="overview-fact group relative overflow-hidden rounded-[8px] border border-[#ead9c4] bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#d7a34f] hover:shadow-xl hover:shadow-[#7b481c]/10">
+                <div className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-[#b0184c] transition duration-500 group-hover:scale-x-100" />
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#8a7353]">{label}</p>
+                    <p className="mt-2 text-xl font-semibold text-[#17211d]">{value}</p>
+                  </div>
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#ffe5f1] text-[#b0184c] transition duration-300 group-hover:bg-[#b0184c] group-hover:text-white">
+                    <Icon className="h-5 w-5" />
+                  </span>
+                </div>
               </div>
             ))}
           </div>
 
           <div className="mt-12 grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
-            <div>
+            <div className="overview-copy">
               <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[#b0184c]">Аяллын санал</p>
               <h2 className="mt-3 text-3xl font-semibold leading-tight sm:text-5xl">
                 Юу авах гэж байгаагаа шууд ойлгох аяллын багц.
@@ -503,28 +512,28 @@ export default function Home() {
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
-              <div className="rounded-[8px] border border-[#d9efe5] bg-[#eef8f3] p-5">
+              <div className="overview-check-card rounded-[8px] border border-[#d9efe5] bg-[#eef8f3] p-5 shadow-[0_20px_60px_rgba(39,100,87,0.10)]">
                 <h3 className="flex items-center gap-2 font-semibold text-[#1f5146]">
                   <CheckCircle2 className="h-5 w-5" />
                   Багтсан зүйлс
                 </h3>
                 <div className="mt-4 space-y-3">
                   {includedItems.map((item) => (
-                    <p key={item} className="flex gap-2 text-sm leading-6 text-[#31584d]">
+                    <p key={item} className="overview-list-item flex gap-2 text-sm leading-6 text-[#31584d]">
                       <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#276457]" />
                       {item}
                     </p>
                   ))}
                 </div>
               </div>
-              <div className="rounded-[8px] border border-[#f0d7bd] bg-[#fff7ed] p-5">
+              <div className="overview-check-card rounded-[8px] border border-[#f0d7bd] bg-[#fff7ed] p-5 shadow-[0_20px_60px_rgba(123,72,28,0.08)]">
                 <h3 className="flex items-center gap-2 font-semibold text-[#7b481c]">
                   <XCircle className="h-5 w-5" />
                   Тусдаа тооцогдох зүйлс
                 </h3>
                 <div className="mt-4 space-y-3">
                   {notIncludedItems.map((item) => (
-                    <p key={item} className="flex gap-2 text-sm leading-6 text-[#765332]">
+                    <p key={item} className="overview-list-item flex gap-2 text-sm leading-6 text-[#765332]">
                       <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-[#b36a2c]" />
                       {item}
                     </p>
@@ -541,13 +550,17 @@ export default function Home() {
                   <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[#b0184c]">7 өдрийн хөтөлбөр</p>
                   <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">Энгийнээр харвал ийм маршруттай.</h2>
                 </div>
-                <Link href="/booking" className="inline-flex h-11 items-center justify-center rounded-full bg-[#e8b95e] px-5 font-semibold text-[#1c1710]">
+                <Link href="/booking" className="magnetic-cta inline-flex h-11 items-center justify-center rounded-full bg-[#e8b95e] px-5 font-semibold text-[#1c1710] shadow-lg shadow-[#e8b95e]/20">
                   Захиалах
                 </Link>
               </div>
-              <div className="mt-6 divide-y divide-[#ead9c4] overflow-hidden rounded-[8px] border border-[#ead9c4] bg-white">
+              <div className="overview-itinerary relative mt-6 overflow-hidden rounded-[8px] border border-[#ead9c4] bg-white shadow-[0_24px_80px_rgba(45,32,16,0.08)]">
+                <div className="overview-itinerary-line absolute bottom-0 left-[24px] top-0 hidden w-px bg-[#ead9c4] sm:block">
+                  <div className="overview-itinerary-fill h-full origin-top scale-y-0 bg-[#b0184c]" />
+                </div>
                 {simpleItinerary.map(([day, title, text]) => (
-                  <div key={day} className="grid gap-2 p-4 sm:grid-cols-[92px_1fr] sm:gap-5">
+                  <div key={day} className="overview-itinerary-row relative grid gap-2 border-b border-[#ead9c4] p-4 last:border-b-0 sm:grid-cols-[92px_1fr] sm:gap-5 sm:pl-12">
+                    <span className="absolute left-[18px] top-5 hidden h-3 w-3 rounded-full bg-white ring-2 ring-[#b0184c] sm:block" />
                     <p className="font-mono text-sm font-semibold text-[#b0184c]">{day}</p>
                     <div>
                       <h3 className="font-semibold text-[#17211d]">{title}</h3>
@@ -561,13 +574,16 @@ export default function Home() {
             <div className="space-y-4">
               <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[#b0184c]">Багцын сонголт</p>
               {packageOptions.map((item) => (
-                <Link key={item.title} href={item.href} className="block rounded-[8px] border border-[#ead9c4] bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[#d7a34f] hover:shadow-lg">
+                <Link key={item.title} href={item.href} className="overview-package-card group relative block overflow-hidden rounded-[8px] border border-[#ead9c4] bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#d7a34f] hover:shadow-xl hover:shadow-[#7b481c]/10">
+                  <span className="absolute inset-y-0 left-0 w-1 origin-top scale-y-0 bg-[#b0184c] transition duration-500 group-hover:scale-y-100" />
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <h3 className="font-semibold text-[#17211d]">{item.title}</h3>
                       <p className="mt-2 text-sm leading-6 text-[#5d655f]">{item.fit}</p>
                     </div>
-                    <ArrowRight className="mt-1 h-5 w-5 shrink-0 text-[#b0184c]" />
+                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#ffe5f1] text-[#b0184c] transition duration-300 group-hover:translate-x-1 group-hover:bg-[#b0184c] group-hover:text-white">
+                      <ArrowRight className="h-5 w-5" />
+                    </span>
                   </div>
                   <div className="mt-4 flex flex-wrap gap-2 text-sm font-semibold">
                     <span className="rounded-full bg-[#f7f1e8] px-3 py-1 text-[#276457]">{item.duration}</span>
