@@ -13,7 +13,7 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (isAdmin && request.cookies.get("sakura_admin")?.value !== "active") {
+  if (isAdmin && !request.cookies.get("sakura_admin")?.value?.startsWith("admin:")) {
     const url = request.nextUrl.clone();
     url.pathname = "/admin/login";
     url.search = "";

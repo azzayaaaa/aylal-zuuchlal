@@ -1,11 +1,38 @@
 import { cookies } from "next/headers";
+import { createHmac, timingSafeEqual } from "crypto";
 
 const COOKIE_NAME = "sakura_admin";
 const USER_COOKIE_NAME = "sakura_user";
 
+function getAdminSecret() {
+  return process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_PASSWORD || "";
+}
+
+function signAdminSession(timestamp: string) {
+  const secret = getAdminSecret();
+  if (!secret) return "";
+  return createHmac("sha256", secret).update(timestamp).digest("base64url");
+}
+
+function isValidAdminSession(value?: string) {
+  if (!value?.startsWith("admin:")) return false;
+
+  const [, timestamp = "", signature = ""] = value.split(":");
+  const createdAt = Number(timestamp);
+  if (!Number.isFinite(createdAt)) return false;
+  if (Date.now() - createdAt > 1000 * 60 * 60 * 8) return false;
+
+  const expected = signAdminSession(timestamp);
+  if (!expected || !signature) return false;
+
+  const expectedBuffer = Buffer.from(expected);
+  const signatureBuffer = Buffer.from(signature);
+  return expectedBuffer.length === signatureBuffer.length && timingSafeEqual(expectedBuffer, signatureBuffer);
+}
+
 export async function isAdminLoggedIn() {
   const cookieStore = await cookies();
-  return cookieStore.get(COOKIE_NAME)?.value === "active";
+  return isValidAdminSession(cookieStore.get(COOKIE_NAME)?.value);
 }
 
 export async function isUserLoggedIn() {
@@ -32,7 +59,8 @@ export async function getUserSession() {
 
 export async function setAdminSession() {
   const cookieStore = await cookies();
-  cookieStore.set(COOKIE_NAME, "active", {
+  const timestamp = String(Date.now());
+  cookieStore.set(COOKIE_NAME, `admin:${timestamp}:${signAdminSession(timestamp)}`, {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",

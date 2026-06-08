@@ -2,18 +2,50 @@ import Image from "next/image";
 import Link from "next/link";
 import type React from "react";
 import { redirect } from "next/navigation";
-import { CalendarDays, CheckCircle2, CreditCard, Download, Inbox, Mail, Phone, Search, TrendingUp, Users } from "lucide-react";
+import {
+  CalendarDays,
+  CheckCircle2,
+  CreditCard,
+  Download,
+  Inbox,
+  Mail,
+  Phone,
+  Search,
+  ShieldCheck,
+  TrendingUp,
+  Users,
+} from "lucide-react";
 import { updateInquiryStatus } from "@/app/actions";
 import { logoutAdmin } from "@/app/login/actions";
-import { getFallbackBookingsFromCookies } from "@/lib/fallback-bookings";
 import { isAdminLoggedIn } from "@/lib/auth";
 import { getDb } from "@/lib/db";
+import { getFallbackBookingsFromCookies } from "@/lib/fallback-bookings";
 import { formatMoney, progressIndex } from "@/lib/travel-logic";
 
 export const dynamic = "force-dynamic";
 
 type AdminPageProps = {
   searchParams: Promise<{ status?: string; q?: string }>;
+};
+
+type AdminInquiry = {
+  id: number;
+  name: string;
+  phone: string;
+  email: string | null;
+  destination: string;
+  travelers: number;
+  preferredDate: Date | null;
+  paymentMethod: string;
+  paymentStatus: string;
+  paymentProofUrl: string | null;
+  budget: string | null;
+  bookingCode: string | null;
+  adminNote: string | null;
+  followUpAt: Date | null;
+  message: string | null;
+  status: string;
+  createdAt: Date;
 };
 
 const statusLabels: Record<string, string> = {
@@ -52,7 +84,7 @@ const packagePrices = [
 
 function formatDate(date: Date | null) {
   if (!date) return "Товлоогүй";
-  return new Intl.DateTimeFormat("mn-MN", { year: "numeric", month: "short", day: "2-digit" }).format(date);
+  return new Intl.DateTimeFormat("mn-MN", { year: "numeric", month: "long", day: "2-digit" }).format(date);
 }
 
 function formatDateTime(date: Date | null) {
@@ -78,15 +110,29 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const activeStatus = params.status ?? "all";
   const query = (params.q ?? "").trim().toLowerCase();
   const fallbackBookings = await getFallbackBookingsFromCookies();
-  const inquiries = await getDb().inquiry.findMany({ orderBy: { createdAt: "desc" } }).catch((error) => {
+  const inquiries = (await getDb().inquiry.findMany({ orderBy: { createdAt: "desc" } }).catch((error) => {
     console.warn("Admin bookings unavailable", error);
     return fallbackBookings;
-  });
+  })) as AdminInquiry[];
+
   const visibleInquiries = inquiries.filter((inquiry) => {
     const statusMatch = activeStatus === "all" || inquiry.status === activeStatus;
-    const haystack = [inquiry.bookingCode, inquiry.name, inquiry.phone, inquiry.email, inquiry.destination, inquiry.budget, inquiry.message, inquiry.adminNote].filter(Boolean).join(" ").toLowerCase();
+    const haystack = [
+      inquiry.bookingCode,
+      inquiry.name,
+      inquiry.phone,
+      inquiry.email,
+      inquiry.destination,
+      inquiry.budget,
+      inquiry.message,
+      inquiry.adminNote,
+    ]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
     return statusMatch && (!query || haystack.includes(query));
   });
+
   const today = new Date().toDateString();
   const todayCount = inquiries.filter((inquiry) => inquiry.createdAt.toDateString() === today).length;
   const totalTravelers = inquiries.reduce((sum, inquiry) => sum + inquiry.travelers, 0);
@@ -107,7 +153,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
 
   return (
     <main className="min-h-screen bg-[#f7f4ee] text-[#18211f]">
-      <header className="sticky top-0 z-30 border-b border-[#ded5c6] bg-white/92 backdrop-blur-xl">
+      <header className="sticky top-0 z-30 border-b border-[#ded5c6] bg-white/94 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-4 sm:px-5 lg:flex-row lg:items-center lg:justify-between lg:px-8">
           <div className="flex items-center gap-4">
             <Image src="/sakura-travel-logo.svg" alt="Sakura Travel logo" width={58} height={58} className="h-14 w-14 rounded-[8px] bg-white object-contain p-1 shadow-sm ring-1 ring-[#e1d8c8]" />
@@ -118,7 +164,9 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           </div>
           <div className="flex flex-wrap gap-3">
             <Link href="/" className="inline-flex h-11 items-center justify-center rounded-[8px] bg-[#276457] px-5 font-semibold text-white">Вэбсайт</Link>
-            <form action={logoutAdmin}><button className="inline-flex h-11 items-center justify-center rounded-[8px] border border-[#d8cebd] bg-white px-5 font-semibold text-[#34443e]">Гарах</button></form>
+            <form action={logoutAdmin}>
+              <button className="inline-flex h-11 items-center justify-center rounded-[8px] border border-[#d8cebd] bg-white px-5 font-semibold text-[#34443e]">Гарах</button>
+            </form>
           </div>
         </div>
       </header>
@@ -128,7 +176,11 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           <div key={label} className="admin-stat-card group relative overflow-hidden rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-[#e1d8c8] transition hover:-translate-y-1 hover:shadow-xl hover:shadow-[#7b481c]/10">
             <div className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-[#b0184c] transition duration-500 group-hover:scale-x-100" />
             <div className="flex items-start justify-between gap-4">
-              <div><p className="text-sm text-[#6b716b]">{label}</p><p className="mt-2 text-3xl font-semibold">{value}</p><p className="mt-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#9a8361]">{hint}</p></div>
+              <div>
+                <p className="text-sm text-[#6b716b]">{label}</p>
+                <p className="mt-2 text-3xl font-semibold">{value}</p>
+                <p className="mt-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#9a8361]">{hint}</p>
+              </div>
               <span className="grid h-11 w-11 place-items-center rounded-full bg-[#eef8f3] text-[#276457]"><Icon className="h-5 w-5" /></span>
             </div>
           </div>
@@ -168,12 +220,19 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
       <section className="mx-auto max-w-7xl px-4 pb-12 sm:px-5 lg:px-8">
         <div className="overflow-hidden rounded-[8px] bg-white shadow-sm ring-1 ring-[#e1d8c8]">
           <div className="flex flex-col gap-2 border-b border-[#e1d8c8] bg-[#10201d] px-5 py-4 text-white sm:flex-row sm:items-end sm:justify-between">
-            <div><p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#e8b95e]">Booking pipeline</p><h2 className="mt-1 text-xl font-semibold">Ирсэн захиалгууд</h2></div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#e8b95e]">Booking pipeline</p>
+              <h2 className="mt-1 text-xl font-semibold">Ирсэн захиалгууд</h2>
+            </div>
             <p className="text-sm text-white/72">{visibleInquiries.length} / {inquiries.length} харагдаж байна</p>
           </div>
 
           {visibleInquiries.length === 0 ? (
-            <div className="p-10 text-center"><Inbox className="mx-auto h-10 w-10 text-[#9a8361]" /><p className="mt-4 font-semibold">Ийм нөхцөлтэй захиалга алга.</p><p className="mt-2 text-sm text-[#6b716b]">Filter эсвэл хайлтаа өөрчлөөд дахин шалгаарай.</p></div>
+            <div className="p-10 text-center">
+              <Inbox className="mx-auto h-10 w-10 text-[#9a8361]" />
+              <p className="mt-4 font-semibold">Ийм нөхцөлтэй захиалга алга.</p>
+              <p className="mt-2 text-sm text-[#6b716b]">Filter эсвэл хайлтаа өөрчлөөд дахин шалгаарай.</p>
+            </div>
           ) : (
             <div className="divide-y divide-[#e1d8c8]">
               {visibleInquiries.map((inquiry) => {
@@ -213,7 +272,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
 
                       <form action={updateInquiryStatus} className="rounded-[8px] border border-[#e1d8c8] bg-white p-4 shadow-sm">
                         <input type="hidden" name="id" value={inquiry.id} />
-                        <p className="font-semibold">Status update</p>
+                        <p className="flex items-center gap-2 font-semibold"><ShieldCheck className="h-4 w-4 text-[#276457]" />Status update</p>
                         <label className="mt-4 block text-sm font-semibold text-[#34443e]">Захиалгын төлөв<select name="status" defaultValue={inquiry.status} className="mt-2 h-11 w-full rounded-[8px] border border-[#d8cebd] bg-white px-3">{Object.entries(statusLabels).filter(([value]) => value !== "all").map(([value, text]) => <option key={value} value={value}>{text}</option>)}</select></label>
                         <label className="mt-4 block text-sm font-semibold text-[#34443e]">Төлбөрийн төлөв<select name="paymentStatus" defaultValue={inquiry.paymentStatus} className="mt-2 h-11 w-full rounded-[8px] border border-[#d8cebd] bg-white px-3">{Object.entries(paymentLabels).map(([value, text]) => <option key={value} value={value}>{text}</option>)}</select></label>
                         <label className="mt-4 block text-sm font-semibold text-[#34443e]">Follow-up цаг<input name="followUpAt" type="datetime-local" defaultValue={inquiry.followUpAt ? inquiry.followUpAt.toISOString().slice(0, 16) : ""} className="mt-2 h-11 w-full rounded-[8px] border border-[#d8cebd] bg-white px-3" /></label>

@@ -94,6 +94,36 @@ export async function getFallbackBookingsFromCookies() {
   return decodeBookings(cookieStore.get(FALLBACK_BOOKINGS_COOKIE)?.value).map(hydrateBooking);
 }
 
+export async function updateFallbackBookingInCookies(
+  id: number,
+  updates: Partial<Pick<FallbackBooking, "status" | "paymentStatus" | "adminNote" | "followUpAt">>,
+) {
+  const cookieStore = await cookies();
+  const existing = decodeBookings(cookieStore.get(FALLBACK_BOOKINGS_COOKIE)?.value).map(hydrateBooking);
+  let updated = false;
+  const nextBookings = existing.map((booking) => {
+    if (booking.id !== id) return booking;
+    updated = true;
+    return {
+      ...booking,
+      ...updates,
+      updatedAt: new Date(),
+    };
+  });
+
+  if (!updated) return false;
+
+  cookieStore.set(FALLBACK_BOOKINGS_COOKIE, encodeBookings(nextBookings.map(serializeBooking)), {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    maxAge: 60 * 60 * 24 * 14,
+  });
+
+  return true;
+}
+
 export function createFallbackBooking(payload: Partial<GatewayBookingPayload>, bookingCode: string): FallbackBooking {
   const adults = Math.max(1, Number(payload.adults ?? 1));
   const children = Math.max(0, Number(payload.children ?? 0));
