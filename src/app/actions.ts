@@ -9,14 +9,15 @@ export async function updateInquiryStatus(formData: FormData) {
   const paymentStatus = String(formData.get("paymentStatus") ?? "pending");
   const adminNote = String(formData.get("adminNote") ?? "").trim();
   const followUpAtValue = String(formData.get("followUpAt") ?? "").trim();
+  const markPaid = String(formData.get("markPaid") ?? "") === "1";
 
   if (!Number.isFinite(id) || id <= 0) return;
 
   await getDb().inquiry.update({
     where: { id },
     data: {
-      status,
-      paymentStatus,
+      status: markPaid ? "paid" : status,
+      paymentStatus: markPaid ? "success" : paymentStatus,
       adminNote: adminNote || null,
       followUpAt: followUpAtValue ? new Date(followUpAtValue) : null,
     },

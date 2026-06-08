@@ -1,4 +1,8 @@
 import { NextResponse } from "next/server";
+import {
+  attachFallbackBookingCookie,
+  createFallbackBooking,
+} from "@/lib/fallback-bookings";
 import { getDb } from "@/lib/db";
 import { sendInquiryNotification } from "@/lib/email";
 import { services, type GatewayBookingPayload } from "@/lib/service-config";
@@ -32,13 +36,15 @@ async function forwardToGateway(
   return NextResponse.json(data, { status: response.status });
 }
 
-async function createLocalFallback(payload: Partial<GatewayBookingPayload>) {
+async function createLocalFallback(request: Request, payload: Partial<GatewayBookingPayload>) {
+  const fallbackCode = createBookingCode();
   if (!process.env.DATABASE_URL) {
-    return NextResponse.json({
-      bookingCode: createBookingCode(),
-      message: "Захиалга demo горимоор бүртгэгдлээ. Менежер төлбөр болон суудлыг баталгаажуулна.",
-      source: "demo-fallback",
-    });
+    const booking = createFallbackBooking(payload, fallbackCode);
+    return attachFallbackBookingCookie(NextResponse.json({
+      bookingCode: booking.bookingCode,
+      message: "Захиалга бүртгэгдлээ. Менежер төлбөр болон суудлыг баталгаажуулна.",
+      source: "fallback-cookie",
+    }), request, booking);
   }
 
   const adults = Math.max(1, Number(payload.adults ?? 1));
@@ -69,11 +75,12 @@ async function createLocalFallback(payload: Partial<GatewayBookingPayload>) {
     });
   } catch (error) {
     console.warn("Local booking database fallback", error);
-    return NextResponse.json({
-      bookingCode: createBookingCode(),
-      message: "Захиалга demo горимоор бүртгэгдлээ. Менежер төлбөр болон суудлыг баталгаажуулна.",
-      source: "demo-fallback",
-    });
+    const booking = createFallbackBooking(payload, fallbackCode);
+    return attachFallbackBookingCookie(NextResponse.json({
+      bookingCode: booking.bookingCode,
+      message: "Захиалга бүртгэгдлээ. Менежер төлбөр болон суудлыг баталгаажуулна.",
+      source: "fallback-cookie",
+    }), request, booking);
   }
 
   try {
@@ -136,6 +143,6 @@ export async function POST(request: Request) {
     return await forwardToGateway(request, payload);
   } catch (error) {
     console.warn("API Gateway unavailable, using local booking fallback", error);
-    return createLocalFallback(payload);
+    return createLocalFallback(request, payload);
   }
 }

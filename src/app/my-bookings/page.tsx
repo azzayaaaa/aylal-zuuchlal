@@ -4,6 +4,7 @@ import { ArrowLeft, CalendarDays, Clock, MapPin, Plane, ShieldCheck, TicketCheck
 import { SiteHeader } from "@/components/site-header";
 import { getUserSession } from "@/lib/auth";
 import { getDb } from "@/lib/db";
+import { getFallbackBookingsFromCookies } from "@/lib/fallback-bookings";
 import { bookingProgressSteps, progressIndex } from "@/lib/travel-logic";
 
 function formatDate(date: Date | null) {
@@ -32,10 +33,15 @@ export default async function MyBookingsPage() {
     user.identifier ? { email: user.identifier } : null,
     user.identifier ? { phone: user.identifier } : null,
   ].filter(Boolean) as Array<{ email: string } | { phone: string }>;
+  const fallbackBookings = await getFallbackBookingsFromCookies();
   const bookings = filters.length
     ? await getDb().inquiry.findMany({ where: { OR: filters }, orderBy: { createdAt: "desc" } }).catch((error) => {
         console.warn("My bookings unavailable", error);
-        return [];
+        return fallbackBookings.filter((booking) =>
+          [booking.email, booking.phone].includes(user.identifier) ||
+          Boolean(user.email && booking.email === user.email) ||
+          Boolean(user.phone && booking.phone === user.phone),
+        );
       })
     : [];
 

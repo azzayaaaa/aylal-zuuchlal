@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { CalendarDays, CheckCircle2, CreditCard, Download, Inbox, Mail, Phone, Search, TrendingUp, Users } from "lucide-react";
 import { updateInquiryStatus } from "@/app/actions";
 import { logoutAdmin } from "@/app/login/actions";
+import { getFallbackBookingsFromCookies } from "@/lib/fallback-bookings";
 import { isAdminLoggedIn } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { formatMoney, progressIndex } from "@/lib/travel-logic";
@@ -76,9 +77,10 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const params = await searchParams;
   const activeStatus = params.status ?? "all";
   const query = (params.q ?? "").trim().toLowerCase();
+  const fallbackBookings = await getFallbackBookingsFromCookies();
   const inquiries = await getDb().inquiry.findMany({ orderBy: { createdAt: "desc" } }).catch((error) => {
     console.warn("Admin bookings unavailable", error);
-    return [];
+    return fallbackBookings;
   });
   const visibleInquiries = inquiries.filter((inquiry) => {
     const statusMatch = activeStatus === "all" || inquiry.status === activeStatus;
@@ -198,7 +200,9 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                         <InfoCard title="Хэрэглэгчийн хүсэлт"><p className="mt-3 whitespace-pre-wrap text-sm leading-6 text-[#5d655f]">{inquiry.message || "Нэмэлт хүсэлт үлдээгээгүй."}</p></InfoCard>
                         {inquiry.paymentProofUrl ? (
                           <InfoCard title="Payment proof">
-                            {inquiry.paymentProofUrl.startsWith("http") || inquiry.paymentProofUrl.startsWith("data:") ? (
+                            {inquiry.paymentProofUrl.startsWith("data:image") ? (
+                              <Image src={inquiry.paymentProofUrl} alt="Payment proof screenshot" width={420} height={260} unoptimized className="mt-3 max-h-56 w-full rounded-[8px] border border-[#ead9c4] object-contain" />
+                            ) : inquiry.paymentProofUrl.startsWith("http") || inquiry.paymentProofUrl.startsWith("data:") ? (
                               <a href={inquiry.paymentProofUrl} target="_blank" rel="noreferrer" className="mt-3 inline-flex h-10 items-center justify-center rounded-[8px] bg-[#10201d] px-4 text-sm font-semibold text-white">Proof харах</a>
                             ) : (
                               <p className="mt-3 rounded-[8px] bg-[#eef8f3] px-3 py-2 text-sm font-semibold text-[#276457]">{inquiry.paymentProofUrl}</p>
@@ -214,6 +218,9 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                         <label className="mt-4 block text-sm font-semibold text-[#34443e]">Төлбөрийн төлөв<select name="paymentStatus" defaultValue={inquiry.paymentStatus} className="mt-2 h-11 w-full rounded-[8px] border border-[#d8cebd] bg-white px-3">{Object.entries(paymentLabels).map(([value, text]) => <option key={value} value={value}>{text}</option>)}</select></label>
                         <label className="mt-4 block text-sm font-semibold text-[#34443e]">Follow-up цаг<input name="followUpAt" type="datetime-local" defaultValue={inquiry.followUpAt ? inquiry.followUpAt.toISOString().slice(0, 16) : ""} className="mt-2 h-11 w-full rounded-[8px] border border-[#d8cebd] bg-white px-3" /></label>
                         <label className="mt-4 block text-sm font-semibold text-[#34443e]">Admin note<textarea name="adminNote" defaultValue={inquiry.adminNote ?? ""} rows={4} className="mt-2 w-full rounded-[8px] border border-[#d8cebd] bg-white px-3 py-2" placeholder="Маргааш 15:00-д залгах, passport шалгах..." /></label>
+                        {inquiry.paymentProofUrl ? (
+                          <button name="markPaid" value="1" className="mt-5 inline-flex h-11 w-full items-center justify-center gap-2 rounded-[8px] bg-[#e8b95e] font-semibold text-[#17211d] transition hover:bg-[#f4c76b]"><CheckCircle2 className="h-4 w-4" />Proof шалгасан, paid болгох</button>
+                        ) : null}
                         <button className="mt-5 inline-flex h-11 w-full items-center justify-center gap-2 rounded-[8px] bg-[#276457] font-semibold text-white"><CreditCard className="h-4 w-4" />Хадгалах</button>
                       </form>
                     </div>
